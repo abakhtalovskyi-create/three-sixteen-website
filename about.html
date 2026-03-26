@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Three Sixteen</title>
+<link rel="stylesheet" href="css/main.css">
+<style>
+/* ─── PAGE-SPECIFIC: ABOUT ─── */
+
+/* ─── STORY SECTION ─── */
+.story-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.story__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 8vw, 9rem);
+  align-items: start;
+}
+
+.story__text-col {}
+
+.story__label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: clamp(2rem, 3.5vw, 3.5rem);
+}
+
+.story__label-line {
+  width: 32px;
+  height: 1px;
+  background: var(--warm);
+}
+
+.story__label span {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+
+.story__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--black);
+  margin-bottom: 2.5rem;
+}
+
+.story__body {
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+  line-height: 1.78;
+  color: var(--mid);
+}
+
+.story__body + .story__body {
+  margin-top: 1.5rem;
+}
+
+.story__img-col {
+  position: sticky;
+  top: 120px;
+}
+
+.story__img-wrap {
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+
+.story__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ─── VALUES SECTION ─── */
+.values-section {
+  background: var(--beige);
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.values__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--black);
+  margin-bottom: clamp(3rem, 6vw, 6rem);
+  max-width: 900px;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid rgba(17,17,17,0.1);
+}
+
+.value-card {
+  padding: clamp(2rem, 3.5vw, 3rem) clamp(1.5rem, 2.5vw, 2.5rem);
+  border-bottom: 1px solid rgba(17,17,17,0.1);
+  border-right: 1px solid rgba(17,17,17,0.1);
+  transition: background 0.3s;
+}
+
+.value-card:nth-child(3n) {
+  border-right: none;
+}
+
+.value-card:hover {
+  background: rgba(17,17,17,0.03);
+}
+
+.value-card__num {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin-bottom: 1.25rem;
+}
+
+.value-card__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 0.85rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.value-card__desc {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--mid);
+}
+
+/* ─── FOUNDER SECTION ─── */
+.founder-section {
+  background: var(--black);
+  padding: 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  min-height: 90vh;
+  overflow: hidden;
+}
+
+.founder__photo-col {
+  position: relative;
+  overflow: hidden;
+}
+
+.founder__photo-col img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: brightness(0.75) saturate(0.8);
+  transition: transform 8s ease-out, filter 0.6s;
+}
+
+.founder__photo-col:hover img {
+  filter: brightness(0.85) saturate(1);
+}
+
+.founder__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 60%, var(--black) 100%);
+}
+
+.founder__text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(4rem, 7vw, 7rem) clamp(3rem, 5vw, 5rem);
+}
+
+.founder__label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.founder__label-line {
+  width: 32px;
+  height: 1px;
+  background: var(--warm);
+}
+
+.founder__label span {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+
+.founder__name {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.founder__role {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin-bottom: 2.5rem;
+}
+
+.founder__quote {
+  border-left: 2px solid var(--warm);
+  padding-left: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.founder__quote p {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  font-style: italic;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+}
+
+.founder__bio {
+  font-size: 0.9rem;
+  line-height: 1.72;
+  color: rgba(255,255,255,0.42);
+}
+
+.founder__bio + .founder__bio {
+  margin-top: 1rem;
+}
+
+/* ─── TIMELINE SECTION ─── */
+.timeline-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.timeline__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--black);
+  margin-bottom: clamp(4rem, 8vw, 8rem);
+  max-width: 720px;
+}
+
+.timeline {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--warm);
+  opacity: 0.3;
+  transform: translateX(-50%);
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  position: relative;
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-item__node {
+  position: absolute;
+  left: 50%;
+  top: 0.2rem;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--warm);
+  border: 2px solid var(--ivory);
+  z-index: 1;
+}
+
+/* Odd items: year+title on left, description on right */
+.timeline-item:nth-child(odd) .timeline-item__left {
+  padding-right: 3.5rem;
+  text-align: right;
+}
+
+.timeline-item:nth-child(odd) .timeline-item__right {
+  padding-left: 3.5rem;
+  text-align: left;
+}
+
+/* Even items: description on left, year+title on right */
+.timeline-item:nth-child(even) .timeline-item__left {
+  padding-right: 3.5rem;
+  text-align: right;
+  order: 1;
+}
+
+.timeline-item:nth-child(even) .timeline-item__right {
+  padding-left: 3.5rem;
+  text-align: left;
+  order: -1;
+}
+
+.timeline-item__year {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--warm);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.timeline-item__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.timeline-item__desc {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--mid);
+  padding-top: 0.15rem;
+}
+
+/* ─── QUALITY SECTION ─── */
+.quality-section {
+  background: var(--black);
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.quality__header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(3rem, 6vw, 6rem);
+  align-items: end;
+  margin-bottom: clamp(3rem, 6vw, 6rem);
+}
+
+.quality__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5.5vw, 5.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--white);
+}
+
+.quality__intro {
+  font-size: clamp(0.9rem, 1.3vw, 1rem);
+  line-height: 1.7;
+  color: rgba(255,255,255,0.38);
+  align-self: end;
+}
+
+.quality-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(2rem, 3vw, 3rem);
+}
+
+.quality-col {}
+
+.quality-col__img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  filter: brightness(0.65) saturate(0.7);
+  margin-bottom: 2rem;
+  transition: filter 0.6s;
+}
+
+.quality-col:hover .quality-col__img {
+  filter: brightness(0.82) saturate(1);
+}
+
+.quality-col__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.85rem;
+  letter-spacing: -0.01em;
+}
+
+.quality-col__body {
+  font-size: 0.88rem;
+  line-height: 1.72;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ─── TEAM SECTION ─── */
+.team-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.team__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--black);
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.team-card {
+  cursor: pointer;
+}
+
+.team-card__img-wrap {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.team-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: brightness(0.88) saturate(0.75);
+  transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.5s;
+}
+
+.team-card:hover .team-card__img-wrap img {
+  transform: scale(1.05);
+  filter: brightness(1) saturate(1);
+}
+
+.team-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.2rem;
+}
+
+.team-card__role {
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--warm);
+  text-transform: uppercase;
+}
+
+/* ─── CAREERS SECTION ─── */
+.careers-section {
+  background: var(--dark);
+  padding: var(--pad-y) var(--pad-x);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 8vw, 8rem);
+  align-items: center;
+}
+
+.careers__label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.careers__label-line {
+  width: 32px;
+  height: 1px;
+  background: var(--warm);
+}
+
+.careers__label span {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+
+.careers__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+
+.careers__body {
+  font-size: clamp(0.9rem, 1.3vw, 1rem);
+  line-height: 1.72;
+  color: rgba(255,255,255,0.42);
+  margin-bottom: 2.5rem;
+  max-width: 440px;
+}
+
+.careers__stat-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.careers__big-num {
+  font-family: var(--font-serif);
+  font-size: clamp(6rem, 16vw, 16rem);
+  font-weight: 700;
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.08);
+  letter-spacing: -0.06em;
+  user-select: none;
+  transition: -webkit-text-stroke 0.6s cubic-bezier(0.16,1,0.3,1);
+}
+
+.careers__stat-side:hover .careers__big-num {
+  -webkit-text-stroke: 1px rgba(196,149,106,0.3);
+}
+
+.careers__stat-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-top: 1rem;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .founder-section {
+    grid-template-columns: 1fr 1fr;
+  }
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .quality__header {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .story__inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .story__img-col {
+    position: static;
+    order: -1;
+  }
+
+  .story__img-wrap {
+    aspect-ratio: 4 / 3;
+  }
+
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .value-card:nth-child(3n) {
+    border-right: 1px solid rgba(17,17,17,0.1);
+  }
+
+  .value-card:nth-child(2n) {
+    border-right: none;
+  }
+
+  .founder-section {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .founder__photo-col {
+    min-height: 60vw;
+  }
+
+  .founder__overlay {
+    background: linear-gradient(to bottom, transparent 40%, var(--black) 100%);
+  }
+
+  .timeline::before { display: none; }
+
+  .timeline-item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding-left: 2rem;
+  }
+
+  .timeline-item__node {
+    left: 0;
+    transform: none;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-item__left,
+  .timeline-item:nth-child(even) .timeline-item__left {
+    padding-right: 0;
+    text-align: left;
+    order: -1;
+  }
+
+  .timeline-item:nth-child(odd) .timeline-item__right,
+  .timeline-item:nth-child(even) .timeline-item__right {
+    padding-left: 0;
+    text-align: left;
+    order: 1;
+  }
+
+  .timeline::before {
+    display: block;
+    left: 0;
+    transform: none;
+  }
+
+  .quality-columns {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .careers-section {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .careers__stat-side {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .value-card:nth-child(2n) {
+    border-right: none;
+  }
+
+  .value-card {
+    border-right: none;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Page transition + scroll progress -->
+<div class="page-transition"></div>
+<div class="scroll-progress"></div>
+
+<!-- Mobile nav overlay -->
+<div class="nav-overlay" id="navOverlay">
+  <ul class="nav-overlay__links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-overlay__footer">Three Sixteen &mdash; Bonita Springs, FL</div>
+</div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader__logo">Three Sixteen</div>
+  <div class="loader__bar-container"><div class="loader__bar" id="loaderBar"></div></div>
+  <div class="loader__num" id="loaderNum">0%</div>
+</div>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"></div>
+</div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Three Sixteen</a>
+  <ul class="nav-links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="locations.html" class="nav-cta">Find a Location</a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="page-hero page-hero--tall" id="pageHero">
+  <div class="page-hero__bg" id="heroBg" style="background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1800&q=80&fit=crop');"></div>
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content">
+    <div class="page-hero__eyebrow">
+      <div class="page-hero__eyebrow-line"></div>
+      <span>Est. 2021 &middot; Bonita Springs, FL</span>
+    </div>
+    <h1 class="page-hero__title">
+      <span class="line"><span class="word">About /</span></span>
+      <span class="line"><span class="word">Three /</span></span>
+      <span class="line"><span class="word">Sixteen.</span></span>
+    </h1>
+    <div class="page-hero__subtitle">
+      <span class="line">We started because we believed specialty coffee could be calm,</span>
+      <span class="line">accessible, and community-rooted — without being pretentious.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     STATEMENT
+════════════════════════════════════════ -->
+<section class="statement">
+  <p class="statement__text" id="statementText">
+    <span class="statement__word"><span class="statement__word-inner">Three</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">Sixteen</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">is</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">not</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">a</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">chain.</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">It</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">is</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">not</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">a</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">concept.</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">It</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">is</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">a</span></span>&#32;<span class="statement__word"><span class="statement__word-inner">commitment.</span></span>
+  </p>
+  <p class="label" style="color: var(--warm); margin-top: 3rem; opacity: 1;">Founded 2021. Bonita Springs, FL.</p>
+</section>
+
+<!-- ═══════════════════════════════════════
+     OUR STORY
+════════════════════════════════════════ -->
+<section class="story-section">
+  <div class="story__inner">
+
+    <div class="story__text-col">
+      <div class="story__label reveal">
+        <div class="story__label-line"></div>
+        <span>How it started</span>
+      </div>
+
+      <h2 class="story__title reveal">
+        It started with one rule: never compromise on quality.
+      </h2>
+
+      <p class="story__body reveal">
+        Three Sixteen was founded in 2021 by Andrii B. in Bonita Springs, Florida. After years in hospitality and specialty coffee in Europe, the idea was simple: build the café that Southwest Florida was missing.
+      </p>
+
+      <p class="story__body reveal">
+        The name comes from the proportions used in specialty coffee — the standard brew ratio that produces a balanced, intentional cup. It became shorthand for everything we do: precise, deliberate, and never arbitrary.
+      </p>
+
+      <p class="story__body reveal">
+        We spent the first year visiting farms in Ethiopia, Colombia, and Guatemala before we opened. Not because we had to — because we believed what we served should be something we stood behind completely.
+      </p>
+    </div>
+
+    <div class="story__img-col">
+      <div class="story__img-wrap img-reveal">
+        <img
+          src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=900&q=85&fit=crop"
+          alt="Coffee preparation at Three Sixteen"
+          loading="lazy"
+        >
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     VALUES
+════════════════════════════════════════ -->
+<section class="values-section">
+
+  <div class="section-label reveal">
+    <div class="section-label__line"></div>
+    <span class="label">What we stand for</span>
+  </div>
+
+  <h2 class="values__headline reveal">Intentional from farm to cup.</h2>
+
+  <div class="values-grid stagger">
+
+    <div class="value-card">
+      <div class="value-card__num">01</div>
+      <div class="value-card__title">Intentional Craft</div>
+      <p class="value-card__desc">Every cup is a deliberate act — sourced from farms we know, roasted to bring out character, not to mask it. We don't do shortcuts.</p>
+    </div>
+
+    <div class="value-card">
+      <div class="value-card__num">02</div>
+      <div class="value-card__title">Seasonal &amp; Local</div>
+      <p class="value-card__desc">Our menu follows Florida's rhythm. What's in season stays on the menu. What's not, doesn't. No exceptions.</p>
+    </div>
+
+    <div class="value-card">
+      <div class="value-card__num">03</div>
+      <div class="value-card__title">Community Space</div>
+      <p class="value-card__desc">Our cafes are designed to linger in — neighbourhood anchors built for connection, not just caffeine.</p>
+    </div>
+
+    <div class="value-card">
+      <div class="value-card__num">04</div>
+      <div class="value-card__title">Radical Transparency</div>
+      <p class="value-card__desc">We share how we operate — costs, decisions, mistakes. Because trust is built in the open, not behind closed doors.</p>
+    </div>
+
+    <div class="value-card">
+      <div class="value-card__num">05</div>
+      <div class="value-card__title">Quality Over Growth</div>
+      <p class="value-card__desc">We will never open a new location to meet a financial target. We open when we know we can maintain the standard.</p>
+    </div>
+
+    <div class="value-card">
+      <div class="value-card__num">06</div>
+      <div class="value-card__title">People First</div>
+      <p class="value-card__desc">Our team are not gig workers. They have careers here. We invest in training, pay above market, and promote from within.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOUNDER
+════════════════════════════════════════ -->
+<section class="founder-section">
+
+  <div class="founder__photo-col reveal-left">
+    <img
+      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85&fit=crop&crop=faces"
+      alt="Andrii B., Founder of Three Sixteen"
+      loading="lazy"
+    >
+    <div class="founder__overlay"></div>
+  </div>
+
+  <div class="founder__text-col">
+    <div class="founder__label reveal">
+      <div class="founder__label-line"></div>
+      <span>The founder</span>
+    </div>
+
+    <h2 class="founder__name reveal">Andrii B.</h2>
+    <div class="founder__role reveal">Founder &amp; Operator</div>
+
+    <blockquote class="founder__quote reveal">
+      <p>"I didn't come from coffee. I came from hospitality. The obsession came later — when I tasted the difference that knowing your supply chain makes. From that moment, there was no going back."</p>
+    </blockquote>
+
+    <p class="founder__bio reveal">Born in Ukraine. Spent years working in restaurants and hotels across Europe. Moved to Florida in 2019.</p>
+    <p class="founder__bio reveal">Built Three Sixteen as the café I wanted to be a regular at. Everything from the playlists to the sourcing comes from that same question: would I keep coming back for this?</p>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     TIMELINE
+════════════════════════════════════════ -->
+<section class="timeline-section">
+
+  <div class="section-label reveal">
+    <div class="section-label__line"></div>
+    <span class="label">The timeline</span>
+  </div>
+
+  <h2 class="timeline__headline reveal">Three years. Three locations. One standard.</h2>
+
+  <div class="timeline">
+
+    <!-- 2021 -->
+    <div class="timeline-item reveal">
+      <div class="timeline-item__node"></div>
+      <div class="timeline-item__left">
+        <div class="timeline-item__year">2021</div>
+        <div class="timeline-item__title">The idea.</div>
+      </div>
+      <div class="timeline-item__right">
+        <p class="timeline-item__desc">After years in hospitality in Europe, Andrii moves to Bonita Springs and begins planning Three Sixteen.</p>
+      </div>
+    </div>
+
+    <!-- Q3 2021 -->
+    <div class="timeline-item reveal">
+      <div class="timeline-item__node"></div>
+      <div class="timeline-item__left">
+        <p class="timeline-item__desc">Before opening, we spend months visiting coffee farms in Ethiopia, Colombia, and Guatemala.</p>
+      </div>
+      <div class="timeline-item__right">
+        <div class="timeline-item__year">Q3 2021</div>
+        <div class="timeline-item__title">Farm visits.</div>
+      </div>
+    </div>
+
+    <!-- Q1 2022 -->
+    <div class="timeline-item reveal">
+      <div class="timeline-item__node"></div>
+      <div class="timeline-item__left">
+        <div class="timeline-item__year">Q1 2022</div>
+        <div class="timeline-item__title">Midtown Bonita opens.</div>
+      </div>
+      <div class="timeline-item__right">
+        <p class="timeline-item__desc">Our first location opens to quiet lines and a neighborhood that quickly becomes regulars.</p>
+      </div>
+    </div>
+
+    <!-- 2023 -->
+    <div class="timeline-item reveal">
+      <div class="timeline-item__node"></div>
+      <div class="timeline-item__left">
+        <p class="timeline-item__desc">We deepen relationships with 6 small-lot farms and introduce direct-trade sourcing across all drinks.</p>
+      </div>
+      <div class="timeline-item__right">
+        <div class="timeline-item__year">2023</div>
+        <div class="timeline-item__title">6 farm partnerships.</div>
+      </div>
+    </div>
+
+    <!-- 2024 -->
+    <div class="timeline-item reveal">
+      <div class="timeline-item__node"></div>
+      <div class="timeline-item__left">
+        <div class="timeline-item__year">2024</div>
+        <div class="timeline-item__title">Downtown Naples announced.</div>
+      </div>
+      <div class="timeline-item__right">
+        <p class="timeline-item__desc">After two years at capacity in Bonita Springs, we begin work on our second location.</p>
+      </div>
+    </div>
+
+    <!-- 2025 -->
+    <div class="timeline-item reveal">
+      <div class="timeline-item__node"></div>
+      <div class="timeline-item__left">
+        <p class="timeline-item__desc">Downtown Naples opens Spring 2025. A larger space — same standard.</p>
+      </div>
+      <div class="timeline-item__right">
+        <div class="timeline-item__year">2025</div>
+        <div class="timeline-item__title">Naples opening.</div>
+      </div>
+    </div>
+
+    <!-- 2026 -->
+    <div class="timeline-item reveal">
+      <div class="timeline-item__node"></div>
+      <div class="timeline-item__left">
+        <div class="timeline-item__year">2026</div>
+        <div class="timeline-item__title">Estero Village.</div>
+      </div>
+      <div class="timeline-item__right">
+        <p class="timeline-item__desc">Third location announced. Same story. Same commitment.</p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     QUALITY COMMITMENT
+════════════════════════════════════════ -->
+<section class="quality-section">
+
+  <div class="quality__header">
+    <div>
+      <div class="section-label reveal" style="color: var(--white);">
+        <div class="section-label__line" style="background: rgba(255,255,255,0.2);"></div>
+        <span class="label" style="opacity: 1; color: rgba(255,255,255,0.4);">Our standards</span>
+      </div>
+      <h2 class="quality__headline reveal">What quality<br>means here.</h2>
+    </div>
+    <p class="quality__intro reveal">Three standards. Non-negotiable. Every single day.</p>
+  </div>
+
+  <div class="quality-columns stagger">
+
+    <div class="quality-col">
+      <img
+        class="quality-col__img"
+        src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=85"
+        alt="Coffee sourcing"
+        loading="lazy"
+      >
+      <h3 class="quality-col__title">Coffee sourcing</h3>
+      <p class="quality-col__body">We only buy from farms we've visited. We taste before we commit. We pay above Fair Trade — because Fair Trade is the minimum, not the standard.</p>
+    </div>
+
+    <div class="quality-col">
+      <img
+        class="quality-col__img"
+        src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&q=85"
+        alt="In-house preparation"
+        loading="lazy"
+      >
+      <h3 class="quality-col__title">In-house preparation</h3>
+      <p class="quality-col__body">Everything baked, brewed, and prepared fresh on-site. We don't buy in and we don't cut corners. If it takes 36 hours to ferment properly, it takes 36 hours.</p>
+    </div>
+
+    <div class="quality-col">
+      <img
+        class="quality-col__img"
+        src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=85"
+        alt="Team standards"
+        loading="lazy"
+      >
+      <h3 class="quality-col__title">Team standards</h3>
+      <p class="quality-col__body">Every barista who joins completes a minimum 4-week training programme. Standards are written down. They're enforced. Not because we're strict — because they matter.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     TEAM
+════════════════════════════════════════ -->
+<section class="team-section" id="careers">
+
+  <div class="section-label reveal">
+    <div class="section-label__line"></div>
+    <span class="label">The team</span>
+  </div>
+
+  <h2 class="team__headline reveal">The people behind it.</h2>
+
+  <div class="team-grid stagger">
+
+    <div class="team-card">
+      <div class="team-card__img-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=85"
+          alt="Andrii B."
+          loading="lazy"
+        >
+      </div>
+      <div class="team-card__name">Andrii B.</div>
+      <div class="team-card__role">Founder</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-card__img-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=85"
+          alt="Sarah Chen"
+          loading="lazy"
+        >
+      </div>
+      <div class="team-card__name">Sarah Chen</div>
+      <div class="team-card__role">Head Barista</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-card__img-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85"
+          alt="James Park"
+          loading="lazy"
+        >
+      </div>
+      <div class="team-card__name">James Park</div>
+      <div class="team-card__role">Head Baker</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-card__img-wrap">
+        <img
+          src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=85"
+          alt="Maria Santos"
+          loading="lazy"
+        >
+      </div>
+      <div class="team-card__name">Maria Santos</div>
+      <div class="team-card__role">Manager</div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     CAREERS / WORK WITH US
+════════════════════════════════════════ -->
+<section class="careers-section" id="press">
+
+  <div class="reveal">
+    <div class="careers__label">
+      <div class="careers__label-line"></div>
+      <span>Join us</span>
+    </div>
+
+    <h2 class="careers__headline">We're not hiring right now — but we're always interested.</h2>
+    <p class="careers__body">We don't post job listings. When we grow, we look first to people who are already in our world. If you think that's you, tell us why.</p>
+
+    <a href="contact.html" class="btn-ghost">
+      <span>Get in touch</span>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="careers__stat-side reveal-right">
+    <div class="careers__big-num">100%</div>
+    <div class="careers__stat-label">Promoted from within</div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     NEWSLETTER
+════════════════════════════════════════ -->
+<div class="newsletter" id="newsletter">
+  <div class="reveal">
+    <h2 class="newsletter__title">Stay in the loop.</h2>
+    <p class="newsletter__subtitle">New openings, seasonal menus, and updates worth reading — straight to you.</p>
+  </div>
+  <div class="reveal">
+    <form class="newsletter__form" onsubmit="return false;">
+      <div class="newsletter__input-row">
+        <input type="email" class="newsletter__input" placeholder="Your email address" aria-label="Email address">
+        <button type="submit" class="newsletter__submit">Subscribe</button>
+      </div>
+      <p class="caption">No noise. Unsubscribe any time.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="footer__top">
+    <div>
+      <div class="footer__brand-name">Three Sixteen</div>
+      <p class="footer__brand-tagline">Coffee made with intention. Three cafes across Southwest Florida.</p>
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram">Ig</a>
+        <a href="#" aria-label="Facebook">Fb</a>
+        <a href="#" aria-label="Twitter / X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Explore</div>
+      <ul class="footer__links">
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="locations.html">Locations</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="shop.html">Shop</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Company</div>
+      <ul class="footer__links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html#careers">Careers</a></li>
+        <li><a href="about.html#press">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Community</div>
+      <ul class="footer__links">
+        <li><a href="#">Loyalty Club</a></li>
+        <li><a href="#">Transparency</a></li>
+        <li><a href="#">Partners</a></li>
+        <li><a href="#">Newsletter</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2026 Three Sixteen Coffee &amp; Bakery. All rights reserved.</span>
+    <span class="footer__copy">Bonita Springs &middot; Naples &middot; Estero</span>
+  </div>
+</footer>
+
+<script>
+// Init hero word animations before main.js runs
+document.querySelectorAll('.page-hero__title .word').forEach(w => {
+  w.style.transform = 'translateY(110%)';
+  w.style.display = 'inline-block';
+});
+
+// Hero BG parallax load
+const heroBg = document.getElementById('heroBg');
+if (heroBg) {
+  const img = new Image();
+  img.onload = () => heroBg.classList.add('loaded');
+  img.src = heroBg.style.backgroundImage.replace(/url\(['"]?([^'"]+)['"]?\)/, '$1');
+}
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

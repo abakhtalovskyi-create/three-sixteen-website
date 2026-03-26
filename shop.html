@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Three Sixteen</title>
+<link rel="stylesheet" href="css/main.css">
+<style>
+/* ─── PAGE-SPECIFIC: SHOP ─── */
+
+/* ─── SCROLL PROGRESS ─── */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: var(--warm); z-index: 9998;
+  width: 0; transition: width 0.1s linear;
+}
+
+/* ─── PHILOSOPHY BAR ─── */
+.philosophy-bar {
+  background: var(--dark);
+  padding: clamp(3rem, 6vw, 5rem) var(--pad-x);
+}
+.philosophy-bar__inner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.philosophy-item {
+  padding: 2rem 2.5rem;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+}
+.philosophy-item:first-child { padding-left: 0; }
+.philosophy-item:last-child { border-right: none; }
+.philosophy-item__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.01em;
+}
+.philosophy-item__dot {
+  width: 4px; height: 4px;
+  background: var(--warm);
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.philosophy-item__body {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.6;
+}
+
+/* ─── CATEGORIES SECTION ─── */
+.categories-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: clamp(2.5rem, 4vw, 4rem);
+}
+.category-block {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 3 / 4;
+  background: var(--dark);
+  text-decoration: none;
+  display: block;
+}
+.category-block__img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease-out), filter 0.7s;
+  filter: brightness(0.55) saturate(0.75);
+}
+.category-block:hover .category-block__img {
+  transform: scale(1.07);
+  filter: brightness(0.72) saturate(0.95);
+}
+.category-block__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,7,4,0.92) 0%, rgba(10,7,4,0.15) 55%, transparent 100%);
+}
+.category-block__content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 2rem 1.75rem;
+}
+.category-block__count {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin-bottom: 0.6rem;
+}
+.category-block__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+.category-block__sub {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+.category-block__cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--beige);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
+}
+.category-block:hover .category-block__cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── FEATURED DROP ─── */
+.featured-drop {
+  background: var(--black);
+  padding: var(--pad-y) var(--pad-x);
+}
+.featured-drop__label {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+}
+.featured-drop__label-dot {
+  width: 8px; height: 8px; background: var(--warm); border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.8); }
+}
+.featured-drop__label-text {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--warm);
+}
+.featured-drop__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 8vw, 10rem);
+  align-items: center;
+}
+.featured-drop__image-wrap {
+  position: relative; overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+.featured-drop__image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(196,149,106,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.featured-drop__img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease-out);
+}
+.featured-drop__image-wrap:hover .featured-drop__img {
+  transform: scale(1.04);
+}
+.featured-drop__content { color: var(--white); }
+.featured-drop__category {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--mid); margin-bottom: 1rem;
+}
+.featured-drop__name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.03em; color: var(--white);
+  margin-bottom: 1rem;
+}
+.featured-drop__price {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700; color: var(--warm);
+  margin-bottom: 1.5rem;
+}
+.featured-drop__price span {
+  font-family: var(--font-sans);
+  font-size: 0.75rem; font-weight: 400;
+  color: rgba(255,255,255,0.3); letter-spacing: 0.05em;
+  margin-left: 0.4rem;
+}
+.featured-drop__desc {
+  font-size: 0.92rem; color: rgba(255,255,255,0.5);
+  line-height: 1.7; margin-bottom: 2rem;
+  max-width: 400px;
+}
+.featured-drop__details {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.featured-drop__detail {
+  display: flex; justify-content: space-between;
+  font-size: 0.78rem;
+}
+.featured-drop__detail-label {
+  color: rgba(255,255,255,0.28); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.68rem;
+}
+.featured-drop__detail-value {
+  color: rgba(255,255,255,0.68); font-weight: 500;
+}
+.featured-drop__scarcity {
+  display: flex; align-items: center; gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+.featured-drop__scarcity-dot {
+  width: 7px; height: 7px; background: var(--warm);
+  border-radius: 50%; flex-shrink: 0;
+}
+.featured-drop__scarcity-text {
+  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em;
+  color: var(--warm);
+}
+.featured-drop__ship {
+  font-size: 0.72rem; color: rgba(255,255,255,0.28);
+  letter-spacing: 0.04em; margin-bottom: 1.75rem;
+}
+.featured-drop__btn {
+  width: 100%;
+  padding: 1.1rem 2rem;
+  background: var(--beige);
+  color: var(--black);
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.2s;
+  position: relative; overflow: hidden;
+}
+.featured-drop__btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--white);
+  transform: translateX(-101%);
+  transition: transform 0.3s var(--ease-out);
+}
+.featured-drop__btn:hover::after { transform: translateX(0); }
+.featured-drop__btn:hover { transform: translateY(-2px); }
+.featured-drop__btn span { position: relative; z-index: 1; }
+
+/* ─── PRODUCT GRID SECTIONS ─── */
+.product-section {
+  padding: var(--pad-y) var(--pad-x);
+}
+.product-section--ivory { background: var(--ivory); }
+.product-section--beige { background: var(--beige); }
+.product-section--black { background: var(--black); }
+
+.product-section__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-end;
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+  padding-bottom: 2rem;
+  border-bottom: 1px solid currentColor;
+}
+.product-section--ivory .product-section__header { border-bottom-color: rgba(17,17,17,0.08); }
+.product-section--beige .product-section__header { border-bottom-color: rgba(17,17,17,0.1); }
+.product-section--black .product-section__header { border-bottom-color: rgba(255,255,255,0.06); }
+
+.product-section__label {
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.product-section--ivory .product-section__label { color: var(--mid); }
+.product-section--beige .product-section__label { color: var(--mid); }
+.product-section--black .product-section__label { color: rgba(255,255,255,0.3); }
+
+.product-section__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700; letter-spacing: -0.025em; line-height: 1.05;
+}
+.product-section--ivory .product-section__title { color: var(--black); }
+.product-section--beige .product-section__title { color: var(--black); }
+.product-section--black .product-section__title { color: var(--white); }
+
+.product-section__count {
+  font-size: 0.72rem; letter-spacing: 0.1em;
+  text-transform: uppercase; padding-bottom: 0.25rem;
+}
+.product-section--ivory .product-section__count { color: var(--mid); }
+.product-section--beige .product-section__count { color: var(--mid); }
+.product-section--black .product-section__count { color: rgba(255,255,255,0.25); }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ─── PRODUCT CARD (Light) ─── */
+.product-card {
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  cursor: pointer;
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.12);
+}
+.product-card__image-wrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--beige);
+}
+.product-card__img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+  display: block;
+}
+.product-card:hover .product-card__img { transform: scale(1.06); }
+.product-card__badge {
+  position: absolute; top: 0.9rem; left: 0.9rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+.product-card__badge--new {
+  background: var(--black); color: var(--white);
+}
+.product-card__badge--limited {
+  background: var(--warm); color: var(--white);
+}
+.product-card__body {
+  padding: 1.5rem;
+}
+.product-card__origin {
+  font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--mid); margin-bottom: 0.4rem;
+}
+.product-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--black); letter-spacing: -0.01em;
+  line-height: 1.2; margin-bottom: 0.4rem;
+}
+.product-card__flavor {
+  font-size: 0.8rem; color: var(--mid);
+  line-height: 1.55; margin-bottom: 1.25rem;
+  font-style: italic;
+}
+.product-card__footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(17,17,17,0.07);
+}
+.product-card__price {
+  font-family: var(--font-serif);
+  font-size: 1.25rem; font-weight: 700;
+  color: var(--black); letter-spacing: -0.01em;
+}
+.product-card__price-unit {
+  font-family: var(--font-sans);
+  font-size: 0.68rem; font-weight: 400;
+  color: var(--mid); display: block; margin-top: 0.1rem;
+}
+.add-to-cart {
+  padding: 0.65rem 1.25rem;
+  background: var(--black); color: var(--white);
+  border: none; font-family: var(--font-sans);
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out), background 0.2s;
+  white-space: nowrap;
+}
+.product-card:hover .add-to-cart {
+  opacity: 1; transform: translateY(0);
+}
+.add-to-cart:hover { background: var(--warm); }
+
+/* ─── PRODUCT CARD (Dark — for Apparel) ─── */
+.product-card--dark {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.product-card--dark:hover {
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  border-color: rgba(255,255,255,0.1);
+}
+.product-card--dark .product-card__name { color: var(--white); }
+.product-card--dark .product-card__flavor { color: rgba(255,255,255,0.38); }
+.product-card--dark .product-card__price { color: var(--white); }
+.product-card--dark .product-card__price-unit { color: rgba(255,255,255,0.3); }
+.product-card--dark .product-card__footer { border-top-color: rgba(255,255,255,0.07); }
+.product-card--dark .product-card__origin { color: rgba(255,255,255,0.3); }
+.product-card--dark .add-to-cart {
+  background: var(--beige);
+  color: var(--black);
+}
+.product-card--dark .add-to-cart:hover { background: var(--white); }
+
+.product-card__scarcity {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
+  color: var(--warm); margin-top: 0.35rem;
+  display: flex; align-items: center; gap: 0.35rem;
+}
+.product-card__scarcity::before {
+  content: '';
+  width: 5px; height: 5px; background: var(--warm);
+  border-radius: 50%; display: inline-block; flex-shrink: 0;
+}
+.product-card__sizes {
+  font-size: 0.68rem; color: rgba(255,255,255,0.28);
+  letter-spacing: 0.05em; margin-top: 0.25rem;
+}
+
+/* ─── APPAREL SECTION EXTRA ─── */
+.apparel-subhead {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.4);
+  margin-top: 0.75rem;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+/* ─── COMING SOON SECTION ─── */
+.coming-soon-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+.coming-soon__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 8vw, 10rem);
+  align-items: center;
+  margin-bottom: clamp(4rem, 6vw, 7rem);
+}
+.coming-soon__label {
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--mid); margin-bottom: 1rem;
+}
+.coming-soon__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.05; color: var(--black);
+  margin-bottom: 1.25rem;
+}
+.coming-soon__body {
+  font-size: 0.92rem; color: var(--mid);
+  line-height: 1.7; max-width: 420px;
+}
+.coming-soon-form {
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.coming-soon-form__row { display: flex; }
+.coming-soon-form__input {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  background: rgba(17,17,17,0.04);
+  border: 1px solid rgba(17,17,17,0.12);
+  border-right: none;
+  color: var(--black);
+  font-family: var(--font-sans); font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.coming-soon-form__input::placeholder { color: rgba(17,17,17,0.3); }
+.coming-soon-form__input:focus {
+  background: rgba(17,17,17,0.06);
+  border-color: rgba(17,17,17,0.3);
+}
+.coming-soon-form__submit {
+  padding: 1rem 1.75rem;
+  background: var(--black); border: none;
+  color: var(--white);
+  font-family: var(--font-sans); font-size: 0.72rem;
+  font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; transition: background 0.2s; white-space: nowrap;
+}
+.coming-soon-form__submit:hover { background: var(--dark); }
+.coming-soon-form__caption { font-size: 0.75rem; color: var(--mid); }
+
+/* ─── TEASER CARDS ─── */
+.teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.teaser-card {
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+  background: var(--beige);
+  display: flex; align-items: center; justify-content: center;
+}
+.teaser-card__bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: blur(8px) brightness(0.4) saturate(0.5);
+  transform: scale(1.1);
+}
+.teaser-card__content {
+  position: relative; z-index: 2;
+  text-align: center; padding: 2rem;
+}
+.teaser-card__season {
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--warm); margin-bottom: 0.75rem;
+}
+.teaser-card__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700; color: var(--white);
+  letter-spacing: -0.02em; line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+.teaser-card__status {
+  font-size: 0.7rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.35);
+}
+
+/* ─── TOAST ─── */
+.cart-toast {
+  position: fixed;
+  bottom: 2rem; right: 2rem;
+  background: var(--black); color: var(--white);
+  padding: 1rem 1.75rem;
+  font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 0.06em;
+  z-index: 9990;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  pointer-events: none;
+  display: flex; align-items: center; gap: 0.75rem;
+  border-left: 3px solid var(--warm);
+}
+.cart-toast.visible { opacity: 1; transform: translateY(0); }
+.cart-toast__check {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--warm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; flex-shrink: 0;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .philosophy-bar__inner { grid-template-columns: 1fr; }
+  .philosophy-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 1.5rem 0; }
+  .philosophy-item:last-child { border-bottom: none; }
+  .featured-drop__inner { grid-template-columns: 1fr; gap: 3rem; }
+  .featured-drop__image-wrap { aspect-ratio: 16 / 9; max-height: 480px; }
+  .coming-soon__content { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+@media (max-width: 768px) {
+  .categories-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .category-block { aspect-ratio: 3 / 2; }
+  .category-block__cta { opacity: 1; transform: translateY(0); }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .add-to-cart { opacity: 1; transform: translateY(0); }
+  .teaser-grid { grid-template-columns: 1fr; }
+  .product-section__header { grid-template-columns: 1fr; gap: 0.5rem; }
+  .nav-burger { display: flex !important; }
+  .nav-links { display: none; }
+}
+
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-transition"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Mobile overlay -->
+<div class="nav-overlay" id="navOverlay">
+  <ul class="nav-overlay__links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-overlay__footer">Bonita Springs · Naples · Estero</div>
+</div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader__logo">Three Sixteen</div>
+  <div class="loader__bar-container"><div class="loader__bar" id="loaderBar"></div></div>
+  <div class="loader__num" id="loaderNum">0%</div>
+</div>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"></div>
+</div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Three Sixteen</a>
+  <ul class="nav-links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html" class="active">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="locations.html" class="nav-cta">Find a Location</a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="page-hero page-hero--tall" id="pageHero">
+  <div class="page-hero__bg" id="heroBg" style="background-image: url('https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1800&q=80&fit=crop');"></div>
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content">
+    <div class="page-hero__eyebrow">
+      <div class="page-hero__eyebrow-line"></div>
+      <span>Coffee Beans · Accessories · Apparel</span>
+    </div>
+    <h1 class="page-hero__title">
+      <span class="line"><span class="word">The /</span></span>
+      <span class="line"><span class="word"><em>Shop.</em></span></span>
+    </h1>
+    <div class="page-hero__subtitle">
+      <span class="line">What we drink, wear, and use every day.</span>
+      <span class="line">Carefully selected, in limited quantities.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PHILOSOPHY BAR
+════════════════════════════════════════ -->
+<div class="philosophy-bar">
+  <div class="philosophy-bar__inner">
+    <div class="philosophy-item reveal">
+      <div class="philosophy-item__title">
+        <span class="philosophy-item__dot"></span>Beans we use daily.
+      </div>
+      <p class="philosophy-item__body">The same single-origin coffees we serve at the bar.</p>
+    </div>
+    <div class="philosophy-item reveal" style="transition-delay:0.1s">
+      <div class="philosophy-item__title">
+        <span class="philosophy-item__dot"></span>Tools worth owning.
+      </div>
+      <p class="philosophy-item__body">Selected brewing equipment. Not everything — just what's exceptional.</p>
+    </div>
+    <div class="philosophy-item reveal" style="transition-delay:0.2s">
+      <div class="philosophy-item__title">
+        <span class="philosophy-item__dot"></span>Apparel, thoughtfully.
+      </div>
+      <p class="philosophy-item__body">Small drops. Limited runs. Never restocked.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CATEGORIES
+════════════════════════════════════════ -->
+<section class="categories-section">
+
+  <div class="section-label reveal">
+    <div class="section-label__line"></div>
+    <span class="label">Shop by category</span>
+  </div>
+
+  <div class="categories-grid stagger">
+
+    <!-- Coffee Beans -->
+    <a href="#beans" class="category-block">
+      <img
+        class="category-block__img"
+        src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=900&q=85"
+        alt="Coffee Beans"
+        loading="lazy"
+      >
+      <div class="category-block__overlay"></div>
+      <div class="category-block__content">
+        <div class="category-block__count">4 products</div>
+        <div class="category-block__title">Coffee Beans</div>
+        <div class="category-block__sub">Whole bean. Same farms. Roasted for you.</div>
+        <span class="category-block__cta">Shop Beans →</span>
+      </div>
+    </a>
+
+    <!-- Accessories -->
+    <a href="#accessories" class="category-block">
+      <img
+        class="category-block__img"
+        src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=900&q=85"
+        alt="Accessories"
+        loading="lazy"
+      >
+      <div class="category-block__overlay"></div>
+      <div class="category-block__content">
+        <div class="category-block__count">6 products</div>
+        <div class="category-block__title">Accessories</div>
+        <div class="category-block__sub">Brewing tools, cups, and things we actually use.</div>
+        <span class="category-block__cta">Shop Accessories →</span>
+      </div>
+    </a>
+
+    <!-- Apparel -->
+    <a href="#apparel" class="category-block">
+      <img
+        class="category-block__img"
+        src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&q=85"
+        alt="Apparel"
+        loading="lazy"
+      >
+      <div class="category-block__overlay"></div>
+      <div class="category-block__content">
+        <div class="category-block__count">3 products — Limited</div>
+        <div class="category-block__title">Apparel</div>
+        <div class="category-block__sub">Limited drops. No restocks. First come, first served.</div>
+        <span class="category-block__cta">Shop Apparel →</span>
+      </div>
+    </a>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     FEATURED DROP
+════════════════════════════════════════ -->
+<section class="featured-drop">
+
+  <div class="featured-drop__label reveal">
+    <div class="featured-drop__label-dot"></div>
+    <span class="featured-drop__label-text">New drop</span>
+  </div>
+
+  <div class="featured-drop__inner">
+
+    <div class="featured-drop__image-wrap reveal-left">
+      <img
+        class="featured-drop__img"
+        src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=900&q=85&fit=crop"
+        alt="Ethiopia Yirgacheffe Spring Harvest 2025"
+      >
+    </div>
+
+    <div class="featured-drop__content reveal-right">
+      <div class="featured-drop__category">Coffee Beans</div>
+      <h2 class="featured-drop__name">Limited Edition<br>Spring Roast.</h2>
+      <div class="featured-drop__price">$28.00 <span>/ 250g</span></div>
+      <p class="featured-drop__desc">Washed process. Jasmine, bergamot, and stone fruit. Direct-trade from Sidama Cooperative. Available until sold out.</p>
+
+      <div class="featured-drop__details">
+        <div class="featured-drop__detail">
+          <span class="featured-drop__detail-label">Origin</span>
+          <span class="featured-drop__detail-value">Sidama, Ethiopia</span>
+        </div>
+        <div class="featured-drop__detail">
+          <span class="featured-drop__detail-label">Process</span>
+          <span class="featured-drop__detail-value">Washed</span>
+        </div>
+        <div class="featured-drop__detail">
+          <span class="featured-drop__detail-label">Roast</span>
+          <span class="featured-drop__detail-value">Light</span>
+        </div>
+        <div class="featured-drop__detail">
+          <span class="featured-drop__detail-label">Altitude</span>
+          <span class="featured-drop__detail-value">1900–2200m</span>
+        </div>
+      </div>
+
+      <div class="featured-drop__scarcity">
+        <div class="featured-drop__scarcity-dot"></div>
+        <span class="featured-drop__scarcity-text">Only 48 bags remaining</span>
+      </div>
+      <div class="featured-drop__ship">Ships within 3 business days</div>
+
+      <button class="featured-drop__btn add-to-cart">
+        <span>Add to Cart — Ethiopia Yirgacheffe</span>
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     COFFEE BEANS
+════════════════════════════════════════ -->
+<section class="product-section product-section--ivory" id="beans">
+
+  <div class="product-section__header reveal">
+    <div>
+      <div class="product-section__label">01 / Coffee Beans</div>
+      <h2 class="product-section__title">Direct-trade. Always.</h2>
+    </div>
+    <div class="product-section__count">4 products</div>
+  </div>
+
+  <div class="product-grid stagger">
+
+    <!-- 1: Ethiopia Yirgacheffe -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=85"
+          alt="Ethiopia Yirgacheffe"
+          loading="lazy"
+        >
+        <span class="product-card__badge product-card__badge--new">New</span>
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Ethiopia, Sidama · Washed · Light</div>
+        <div class="product-card__name">Ethiopia Yirgacheffe</div>
+        <div class="product-card__flavor">"Jasmine, bergamot, bright acidity."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$28.00<span class="product-card__price-unit">/ 250g</span></div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2: Colombia Huila -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&q=85"
+          alt="Colombia Huila"
+          loading="lazy"
+        >
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Colombia, Huila · Natural · Medium-Light</div>
+        <div class="product-card__name">Colombia Huila</div>
+        <div class="product-card__flavor">"Red fruit, honey, smooth finish."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$26.00<span class="product-card__price-unit">/ 250g</span></div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: Guatemala Antigua -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=85"
+          alt="Guatemala Antigua"
+          loading="lazy"
+        >
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Guatemala, Antigua · Washed · Medium</div>
+        <div class="product-card__name">Guatemala Antigua</div>
+        <div class="product-card__flavor">"Dark chocolate, walnut, caramel."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$24.00<span class="product-card__price-unit">/ 250g</span></div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: Espresso Blend -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=85"
+          alt="Espresso Blend"
+          loading="lazy"
+        >
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Ethiopia + Colombia · Mixed · Medium</div>
+        <div class="product-card__name">Espresso Blend</div>
+        <div class="product-card__flavor">"Our bar blend. Balanced and syrupy."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$25.00<span class="product-card__price-unit">/ 250g</span></div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     MARQUEE
+════════════════════════════════════════ -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">Farm to Cup <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Direct Trade <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Specialty Grade <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Limited Runs <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Small Batches <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Farm to Cup <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Direct Trade <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Specialty Grade <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Limited Runs <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Small Batches <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ACCESSORIES
+════════════════════════════════════════ -->
+<section class="product-section product-section--beige" id="accessories">
+
+  <div class="product-section__header reveal">
+    <div>
+      <div class="product-section__label">02 / Accessories</div>
+      <h2 class="product-section__title">Tools that earn<br>their place.</h2>
+    </div>
+    <div class="product-section__count">6 products</div>
+  </div>
+
+  <div class="product-grid stagger">
+
+    <!-- Hario V60 -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=85"
+          alt="Hario V60"
+          loading="lazy"
+        >
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Brewing Equipment</div>
+        <div class="product-card__name">Hario V60</div>
+        <div class="product-card__flavor">"Ceramic dripper. The standard."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$42.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three Sixteen Mug -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=85"
+          alt="Three Sixteen Mug"
+          loading="lazy"
+        >
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Ceramics</div>
+        <div class="product-card__name">Three Sixteen Mug</div>
+        <div class="product-card__flavor">"16oz. Matte black. Our logo."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$34.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fellow Ode Grinder -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&q=85"
+          alt="Fellow Ode Grinder"
+          loading="lazy"
+        >
+        <span class="product-card__badge product-card__badge--new">New</span>
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Grinders</div>
+        <div class="product-card__name">Fellow Ode Grinder</div>
+        <div class="product-card__flavor">"64mm flat burrs. Home grind quality."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$299.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chemex 6-Cup -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=85"
+          alt="Chemex 6-Cup"
+          loading="lazy"
+        >
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Pour-Over</div>
+        <div class="product-card__name">Chemex 6-Cup</div>
+        <div class="product-card__flavor">"Classic pour-over. Timeless design."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$49.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kalita Wave -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=85"
+          alt="Kalita Wave"
+          loading="lazy"
+        >
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Pour-Over</div>
+        <div class="product-card__name">Kalita Wave</div>
+        <div class="product-card__flavor">"Flat-bed filter. Forgiving extraction."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$38.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ratio Filter Bag -->
+    <div class="product-card">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=85"
+          alt="Ratio Filter Bag"
+          loading="lazy"
+        >
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Consumables</div>
+        <div class="product-card__name">Ratio Filter Bag</div>
+        <div class="product-card__flavor">"Compostable. Biodegradable. 100-pack."</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$12.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     APPAREL
+════════════════════════════════════════ -->
+<section class="product-section product-section--black" id="apparel">
+
+  <div class="product-section__header reveal">
+    <div>
+      <div class="product-section__label">03 / Apparel — Limited Drop</div>
+      <h2 class="product-section__title">Drop 001.<br>Spring 2025.</h2>
+      <p class="apparel-subhead">Limited run. No restocks. These items will not return.</p>
+    </div>
+    <div class="product-section__count">3 products</div>
+  </div>
+
+  <div class="product-grid stagger">
+
+    <!-- Three Sixteen Tee -->
+    <div class="product-card product-card--dark">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=85"
+          alt="Three Sixteen Tee — Black"
+          loading="lazy"
+        >
+        <span class="product-card__badge product-card__badge--limited">Limited</span>
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Apparel · Drop 001</div>
+        <div class="product-card__name">Three Sixteen Tee — Black</div>
+        <div class="product-card__flavor">"100% organic cotton. Our wordmark."</div>
+        <div class="product-card__scarcity">12 remaining</div>
+        <div class="product-card__sizes">Sizes: XS · S · M · L · XL</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$48.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Three Sixteen Tote -->
+    <div class="product-card product-card--dark">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=85"
+          alt="Three Sixteen Tote"
+          loading="lazy"
+        >
+        <span class="product-card__badge product-card__badge--limited">Limited</span>
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Apparel · Drop 001</div>
+        <div class="product-card__name">Three Sixteen Tote</div>
+        <div class="product-card__flavor">"Canvas. Natural. Heavyweight."</div>
+        <div class="product-card__scarcity">Limited stock</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$36.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barista Apron -->
+    <div class="product-card product-card--dark">
+      <div class="product-card__image-wrap">
+        <img
+          class="product-card__img"
+          src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&q=85"
+          alt="Barista Apron"
+          loading="lazy"
+        >
+        <span class="product-card__badge product-card__badge--limited">Limited</span>
+      </div>
+      <div class="product-card__body">
+        <div class="product-card__origin">Apparel · Drop 001</div>
+        <div class="product-card__name">Barista Apron</div>
+        <div class="product-card__flavor">"Waxed cotton. Made in Portugal. Adjustable."</div>
+        <div class="product-card__scarcity">4 remaining</div>
+        <div class="product-card__footer">
+          <div>
+            <div class="product-card__price">$89.00</div>
+          </div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     COMING SOON
+════════════════════════════════════════ -->
+<section class="coming-soon-section">
+
+  <div class="coming-soon__content">
+    <div class="reveal">
+      <div class="coming-soon__label">Coming soon</div>
+      <h2 class="coming-soon__title">Drop 002 is<br>in the works.</h2>
+      <p class="coming-soon__body">We don't rush drops. When it's ready, it ships. Subscribe below to get early access.</p>
+    </div>
+    <div class="reveal">
+      <form class="coming-soon-form" onsubmit="return false;">
+        <div class="coming-soon-form__row">
+          <input type="email" class="coming-soon-form__input" placeholder="Your email address" aria-label="Email address">
+          <button type="submit" class="coming-soon-form__submit">Get Early Access</button>
+        </div>
+        <p class="coming-soon-form__caption">Early access only. No spam. Unsubscribe anytime.</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="teaser-grid stagger">
+
+    <div class="teaser-card">
+      <div class="teaser-card__bg" style="background-image: url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&q=85');"></div>
+      <div class="teaser-card__content">
+        <div class="teaser-card__season">Summer 2025</div>
+        <div class="teaser-card__title">Drop 002</div>
+        <div class="teaser-card__status">Not yet announced</div>
+      </div>
+    </div>
+
+    <div class="teaser-card">
+      <div class="teaser-card__bg" style="background-image: url('https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=85');"></div>
+      <div class="teaser-card__content">
+        <div class="teaser-card__season">?</div>
+        <div class="teaser-card__title">Something<br>New.</div>
+        <div class="teaser-card__status">Details TBA</div>
+      </div>
+    </div>
+
+    <div class="teaser-card">
+      <div class="teaser-card__bg" style="background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=85');"></div>
+      <div class="teaser-card__content">
+        <div class="teaser-card__season">Fall 2025</div>
+        <div class="teaser-card__title">Stay<br>Tuned.</div>
+        <div class="teaser-card__status">Subscribe for access</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     NEWSLETTER
+════════════════════════════════════════ -->
+<div class="newsletter" id="newsletter">
+  <div class="reveal">
+    <h2 class="newsletter__title">Get drops first.</h2>
+    <p class="newsletter__subtitle">New roasts, limited apparel, and restocks — subscribers get 48hrs early access.</p>
+  </div>
+  <div class="reveal">
+    <form class="newsletter__form" onsubmit="return false;">
+      <div class="newsletter__input-row">
+        <input type="email" class="newsletter__input" placeholder="Your email address" aria-label="Email address">
+        <button type="submit" class="newsletter__submit">Subscribe</button>
+      </div>
+      <p class="caption">No noise. Unsubscribe any time.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="footer__top">
+    <div>
+      <div class="footer__brand-name">Three Sixteen</div>
+      <p class="footer__brand-tagline">Coffee made with intention. Three cafes across Southwest Florida.</p>
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram">Ig</a>
+        <a href="#" aria-label="Facebook">Fb</a>
+        <a href="#" aria-label="Twitter / X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Explore</div>
+      <ul class="footer__links">
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="locations.html">Locations</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="shop.html">Shop</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Company</div>
+      <ul class="footer__links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html#careers">Careers</a></li>
+        <li><a href="about.html#press">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Shop</div>
+      <ul class="footer__links">
+        <li><a href="#beans">Coffee Beans</a></li>
+        <li><a href="#accessories">Accessories</a></li>
+        <li><a href="#apparel">Apparel</a></li>
+        <li><a href="#newsletter">Early Access</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2025 Three Sixteen Coffee &amp; Bakery. All rights reserved.</span>
+    <span class="footer__copy">Bonita Springs &middot; Naples &middot; Estero</span>
+  </div>
+</footer>
+
+<!-- Cart Toast -->
+<div class="cart-toast" id="cartToast">
+  <div class="cart-toast__check">✓</div>
+  <span id="cartToastMsg">Added to cart</span>
+</div>
+
+<!-- Page-specific init -->
+<script>
+// Hero word setup
+document.querySelectorAll('.page-hero__title .word').forEach(w => {
+  w.style.transform = 'translateY(110%)';
+  w.style.display = 'inline-block';
+});
+
+// Hero BG parallax-in
+const heroBg = document.getElementById('heroBg');
+if (heroBg) {
+  const img = new Image();
+  img.onload = () => heroBg.classList.add('loaded');
+  img.src = heroBg.style.backgroundImage.replace(/url\(['"]?([^'"]+)['"]?\)/, '$1');
+}
+
+// Scroll progress bar
+const scrollProgress = document.getElementById('scrollProgress');
+if (scrollProgress) {
+  window.addEventListener('scroll', () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+    scrollProgress.style.width = pct + '%';
+  }, { passive: true });
+}
+
+// Add to Cart — toast + inline feedback
+(function() {
+  const toast = document.getElementById('cartToast');
+  const toastMsg = document.getElementById('cartToastMsg');
+  let toastTimer;
+
+  function showToast(name) {
+    if (toastTimer) clearTimeout(toastTimer);
+    toastMsg.textContent = name ? 'Added: ' + name : 'Added to cart';
+    toast.classList.add('visible');
+    toastTimer = setTimeout(() => toast.classList.remove('visible'), 2800);
+  }
+
+  document.querySelectorAll('.add-to-cart').forEach(btn => {
+    btn.addEventListener('click', function() {
+      // Find product name
+      const card = this.closest('.product-card, .featured-drop__content');
+      let name = '';
+      if (card) {
+        const nameEl = card.querySelector('.product-card__name, .featured-drop__name');
+        if (nameEl) name = nameEl.textContent.trim().replace(/\n/g, ' ').replace(/\s+/g,' ');
+      }
+      const originalText = this.textContent;
+      this.textContent = 'Added ✓';
+      this.style.background = 'var(--warm)';
+      this.style.color = 'var(--white)';
+      setTimeout(() => {
+        this.textContent = originalText;
+        this.style.background = '';
+        this.style.color = '';
+      }, 2000);
+      showToast(name);
+    });
+  });
+})();
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

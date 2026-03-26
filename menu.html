@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu — Three Sixteen Coffee & Bakery</title>
+<link rel="stylesheet" href="css/main.css">
+<style>
+  /* ─── MENU PAGE OVERRIDES ─── */
+
+  /* No-price modifier — collapses grid to single column */
+  .menu-item--no-price {
+    grid-template-columns: 1fr;
+  }
+  .menu-item--no-price .menu-item__name {
+    font-size: 1.25rem;
+  }
+  .menu-item--no-price .menu-item__desc {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.38);
+    margin-top: 0.25rem;
+  }
+
+  /* ─── PHILOSOPHY BAR ─── */
+  .philosophy-bar {
+    background: var(--dark);
+    padding: clamp(3.5rem, 7vw, 7rem) var(--pad-x);
+  }
+  .philosophy-bar__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: clamp(2.5rem, 5vw, 5rem);
+  }
+  .philosophy-item {}
+  .philosophy-item__title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.9rem;
+    letter-spacing: -0.01em;
+  }
+  .philosophy-item__body {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.38);
+    line-height: 1.75;
+    max-width: 280px;
+  }
+  .philosophy-bar__label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0;
+  }
+  .philosophy-bar__label::before {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--warm);
+    opacity: 0.6;
+  }
+
+  /* ─── CATEGORY OVERVIEW ─── */
+  .category-overview {
+    background: var(--ivory);
+    padding: var(--pad-y) var(--pad-x);
+  }
+  .category-overview__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: clamp(3rem, 5vw, 5rem);
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+  }
+  .category-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background: var(--dark);
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+  }
+  .category-card__img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.9s var(--ease-out), filter 0.9s;
+    filter: brightness(0.55) saturate(0.8);
+  }
+  .category-card:hover .category-card__img {
+    transform: scale(1.07);
+    filter: brightness(0.72) saturate(1);
+  }
+  .category-card__overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,7,4,0.92) 0%, rgba(10,7,4,0.2) 55%, transparent 100%);
+  }
+  .category-card__content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 2rem 2rem 2.25rem;
+    transform: translateY(0.5rem);
+    transition: transform 0.5s var(--ease-out);
+  }
+  .category-card:hover .category-card__content {
+    transform: translateY(0);
+  }
+  .category-card__num {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+  .category-card__name {
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.8rem;
+  }
+  .category-card__desc {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    max-width: 240px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s var(--ease-out) 0.05s, transform 0.4s var(--ease-out) 0.05s;
+  }
+  .category-card:hover .category-card__desc {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .category-card__arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--beige);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s var(--ease-out) 0.1s, transform 0.4s var(--ease-out) 0.1s;
+  }
+  .category-card:hover .category-card__arrow {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── DRINKS SECTION ─── */
+  .drinks-section {
+    background: var(--black);
+    padding: var(--pad-y) var(--pad-x);
+  }
+  .drinks-section .section-label__line { background: rgba(255,255,255,0.2); }
+  .drinks-section .label { color: rgba(255,255,255,0.35); }
+  .drinks-layout {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: start;
+    margin-top: clamp(3rem, 5vw, 5rem);
+  }
+  .drinks-sticky {
+    position: sticky;
+    top: 96px;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+  }
+  .drinks-sticky img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.82);
+    transition: transform 0.8s var(--ease-out);
+  }
+  .drinks-sticky:hover img { transform: scale(1.03); }
+  .drinks-sticky__tag {
+    position: absolute;
+    top: 1.75rem; left: 1.75rem;
+    background: var(--warm);
+    color: var(--white);
+    font-size: 0.62rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+  }
+
+  /* Sub-headers within drink groups */
+  .menu-group {
+    margin-bottom: 0;
+  }
+  .menu-group__label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm);
+    font-weight: 600;
+    padding: 2rem 0 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 0;
+  }
+  .menu-group:first-child .menu-group__label {
+    padding-top: 0;
+  }
+
+  /* Dark section menu items override border */
+  .drinks-section .menu-item {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  /* ─── BAKERY SECTION ─── */
+  .bakery-section {
+    background: var(--beige);
+    padding: var(--pad-y) var(--pad-x);
+  }
+  .bakery-section .section-label__line { background: rgba(17,17,17,0.2); }
+  .bakery-section .label { color: rgba(17,17,17,0.4); }
+  .bakery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.75rem);
+    margin-top: clamp(3rem, 5vw, 5rem);
+  }
+  .bakery-card {
+    background: var(--white);
+    overflow: hidden;
+    transition: box-shadow 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+    cursor: pointer;
+  }
+  .bakery-card:hover {
+    box-shadow: 0 20px 60px rgba(17,17,17,0.12);
+    transform: translateY(-3px);
+  }
+  .bakery-card__img-wrap {
+    overflow: hidden;
+    aspect-ratio: 4/3;
+  }
+  .bakery-card__img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s var(--ease-out), filter 0.7s;
+    filter: brightness(0.94);
+  }
+  .bakery-card:hover .bakery-card__img {
+    transform: scale(1.06);
+    filter: brightness(1);
+  }
+  .bakery-card__body {
+    padding: 1.4rem 1.5rem 1.75rem;
+  }
+  .bakery-card__name {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.01em;
+  }
+  .bakery-card__desc {
+    font-size: 0.8rem;
+    color: var(--mid);
+    line-height: 1.65;
+  }
+
+  /* ─── FOOD SECTION ─── */
+  .food-section {
+    background: var(--ivory);
+    padding: var(--pad-y) var(--pad-x);
+  }
+  .food-section .section-label__line { background: rgba(17,17,17,0.2); }
+  .food-section .label { color: rgba(17,17,17,0.4); }
+  .food-layout {
+    margin-top: clamp(3rem, 5vw, 5rem);
+    max-width: 860px;
+  }
+  .food-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid rgba(17,17,17,0.09);
+    cursor: pointer;
+    transition: padding-left 0.3s var(--ease-out);
+    position: relative; overflow: hidden;
+  }
+  .food-item::before {
+    content: '';
+    position: absolute; left: 0; top: 50%;
+    width: 0; height: 1px; background: var(--warm);
+    transform: translateY(-50%);
+    transition: width 0.4s var(--ease-out);
+  }
+  .food-item:hover { padding-left: 1.25rem; }
+  .food-item:hover::before { width: 0.9rem; }
+  .food-item:first-child {
+    border-top: 1px solid rgba(17,17,17,0.09);
+  }
+  .food-item__name {
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: -0.015em;
+  }
+  .food-item__desc {
+    font-size: 0.83rem;
+    color: var(--mid);
+    line-height: 1.6;
+    max-width: 600px;
+  }
+  .food-note {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.78rem;
+    color: var(--mid);
+    letter-spacing: 0.02em;
+  }
+  .food-note::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--warm);
+    flex-shrink: 0;
+  }
+
+  /* ─── LOCATION CTA SECTION ─── */
+  .location-cta {
+    background: var(--dark);
+    padding: var(--pad-y) var(--pad-x);
+  }
+  .location-cta__header {
+    max-width: 680px;
+    margin-bottom: clamp(3.5rem, 6vw, 6rem);
+  }
+  .location-cta__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 5vw, 4.5rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.1rem;
+  }
+  .location-cta__subtitle {
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    color: rgba(255,255,255,0.38);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+  .location-cta__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .loc-mini-card {
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2rem 2rem 2.25rem;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .loc-mini-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--warm);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .loc-mini-card:hover {
+    border-color: rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.03);
+  }
+  .loc-mini-card:hover::before { transform: scaleX(1); }
+  .loc-mini-badge {
+    display: inline-block;
+    padding: 0.28rem 0.7rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .loc-mini-badge--open { background: var(--warm); color: var(--white); }
+  .loc-mini-badge--soon { background: rgba(45,74,62,0.9); color: rgba(255,255,255,0.8); }
+  .loc-mini-badge--future { background: rgba(26,58,92,0.9); color: rgba(255,255,255,0.7); }
+  .loc-mini-name {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.015em;
+    margin-bottom: 0.3rem;
+  }
+  .loc-mini-region {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 1.5rem;
+  }
+  .loc-mini-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--beige);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(224,215,196,0.2);
+    padding-bottom: 0.3rem;
+    transition: gap 0.3s var(--ease-out), border-color 0.2s;
+  }
+  .loc-mini-link:hover { gap: 0.85rem; border-color: var(--beige); }
+
+  /* ─── FOOD SECTION DARK-CONTEXT RESET ─── */
+  .food-section .h2 { color: var(--black); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .drinks-layout { grid-template-columns: 1fr; }
+    .drinks-sticky { display: none; }
+    .category-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .philosophy-bar__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .category-grid { grid-template-columns: 1fr; }
+    .bakery-grid { grid-template-columns: 1fr 1fr; }
+    .location-cta__grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 580px) {
+    .bakery-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE TRANSITION -->
+<div class="page-transition"></div>
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader__logo">Three Sixteen</div>
+  <div class="loader__bar-container">
+    <div class="loader__bar" id="loaderBar"></div>
+  </div>
+  <div class="loader__num" id="loaderNum">0%</div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"></div>
+</div>
+
+<!-- MOBILE OVERLAY MENU -->
+<div class="nav-overlay" id="navOverlay">
+  <ul class="nav-overlay__links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html" class="active">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-overlay__footer">Bonita Springs · Naples · Estero</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Three Sixteen</a>
+  <ul class="nav-links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html" class="active">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="locations.html" class="nav-cta">Find a Location</a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="page-hero page-hero--tall" id="pageHero">
+  <div class="page-hero__bg" id="heroBg" style="background-image: url('https://images.unsplash.com/photo-1541167760496-1628856ab772?w=1800&q=80&fit=crop');"></div>
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content">
+    <div class="page-hero__eyebrow">
+      <div class="page-hero__eyebrow-line"></div>
+      <span>Seasonal · Sourced · In-House</span>
+    </div>
+    <h1 class="page-hero__title">
+      <span class="line"><span class="word" style="transition-delay:0s">Our /</span></span>
+      <span class="line"><span class="word" style="transition-delay:0.1s">Menu.</span></span>
+    </h1>
+    <p class="page-hero__subtitle">
+      <span class="line" style="transition-delay:0.35s">Everything we serve is made from seasonal ingredients,</span>
+      <span class="line" style="transition-delay:0.45s">sourced from farms we know by name.</span>
+    </p>
+  </div>
+</header>
+
+<!-- PHILOSOPHY BAR -->
+<div class="philosophy-bar">
+  <div class="philosophy-bar__label">Our approach</div>
+  <div class="philosophy-bar__grid stagger">
+    <div class="philosophy-item">
+      <div class="philosophy-item__title">No prices here.</div>
+      <p class="philosophy-item__body">Pricing varies by location. Visit your nearest café or find it on the location page.</p>
+    </div>
+    <div class="philosophy-item">
+      <div class="philosophy-item__title">Changes with the seasons.</div>
+      <p class="philosophy-item__body">Our menu evolves. What's exceptional right now stays on the menu. What's not, doesn't.</p>
+    </div>
+    <div class="philosophy-item">
+      <div class="philosophy-item__title">Made in-house.</div>
+      <p class="philosophy-item__body">Everything baked, brewed, or prepared fresh daily at each location.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORY OVERVIEW -->
+<section class="category-overview">
+  <div class="category-overview__header">
+    <div>
+      <div class="section-label reveal">
+        <div class="section-label__line"></div>
+        <span class="label">Categories</span>
+      </div>
+      <h2 class="h2 reveal" style="transition-delay:0.1s">What we serve.</h2>
+    </div>
+    <p class="body reveal" style="color:var(--mid);max-width:340px;transition-delay:0.2s">Tap a category to jump directly to that section of the menu.</p>
+  </div>
+  <div class="category-grid stagger">
+    <a href="#drinks" class="category-card">
+      <img class="category-card__img" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=85" alt="Drinks" loading="lazy">
+      <div class="category-card__overlay"></div>
+      <div class="category-card__content">
+        <div class="category-card__num">01</div>
+        <div class="category-card__name">Drinks</div>
+        <div class="category-card__desc">Espresso, filter, specialty tea, and seasonal signatures.</div>
+        <span class="category-card__arrow">Explore
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+    <a href="#bakery" class="category-card">
+      <img class="category-card__img" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=85" alt="Bakery" loading="lazy">
+      <div class="category-card__overlay"></div>
+      <div class="category-card__content">
+        <div class="category-card__num">02</div>
+        <div class="category-card__name">Bakery</div>
+        <div class="category-card__desc">Everything baked in-house. Croissants, canelés, tarts, sourdough.</div>
+        <span class="category-card__arrow">Explore
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+    <a href="#food" class="category-card">
+      <img class="category-card__img" src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=85" alt="Food" loading="lazy">
+      <div class="category-card__overlay"></div>
+      <div class="category-card__content">
+        <div class="category-card__num">03</div>
+        <div class="category-card__name">Food</div>
+        <div class="category-card__desc">Seasonal breakfast and brunch plates. Simple, generous, and honest.</div>
+        <span class="category-card__arrow">Explore
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- DRINKS SECTION -->
+<section class="drinks-section" id="drinks">
+  <div class="section-label reveal">
+    <div class="section-label__line"></div>
+    <span class="label">01 / Drinks</span>
+  </div>
+  <h2 class="h2 reveal" style="color:var(--white);transition-delay:0.1s">Coffee &amp; more.</h2>
+
+  <div class="drinks-layout">
+    <!-- Items list -->
+    <div class="reveal-left" style="transition-delay:0.1s">
+
+      <!-- Espresso Drinks group -->
+      <div class="menu-group">
+        <div class="menu-group__label">Espresso Drinks</div>
+
+        <a href="product-espresso.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Espresso</div>
+            <div class="menu-item__desc">Double shot, single origin. Direct and precise.</div>
+          </div>
+        </a>
+
+        <a href="product-ristretto.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Ristretto</div>
+            <div class="menu-item__desc">Shorter pull, more concentrated — our preferred base.</div>
+          </div>
+        </a>
+
+        <a href="product-americano.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Americano</div>
+            <div class="menu-item__desc">Espresso lengthened with filtered water.</div>
+          </div>
+        </a>
+
+        <a href="product-flat-white.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Flat White</div>
+            <div class="menu-item__desc">Double ristretto, silky textured milk. Signature ratio.</div>
+          </div>
+        </a>
+
+        <a href="product-oat-flat-white.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Oat Flat White</div>
+            <div class="menu-item__desc">Our most popular. Oatly oat milk, ristretto.</div>
+          </div>
+        </a>
+
+        <a href="product-cappuccino.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Cappuccino</div>
+            <div class="menu-item__desc">Equal parts espresso, milk, foam. Classic.</div>
+          </div>
+        </a>
+
+        <a href="product-latte.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Latte</div>
+            <div class="menu-item__desc">Double shot, steamed milk. Calm and steady.</div>
+          </div>
+        </a>
+
+        <a href="product-lavender-latte.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Lavender Latte</div>
+            <div class="menu-item__desc">House-made lavender syrup, oat milk, ristretto.</div>
+          </div>
+        </a>
+
+        <a href="product-cortado.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Cortado</div>
+            <div class="menu-item__desc">Equal parts espresso and warm milk.</div>
+          </div>
+        </a>
+
+        <a href="product-macchiato.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Macchiato</div>
+            <div class="menu-item__desc">Espresso marked with a touch of foam.</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Cold group -->
+      <div class="menu-group">
+        <div class="menu-group__label">Cold</div>
+
+        <a href="product-cold-brew.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Cold Brew</div>
+            <div class="menu-item__desc">18-hour steep, dark and smooth.</div>
+          </div>
+        </a>
+
+        <a href="product-iced-latte.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Iced Latte</div>
+            <div class="menu-item__desc">Double shot over ice, your choice of milk.</div>
+          </div>
+        </a>
+
+        <a href="product-nitro.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Nitro Cold Brew</div>
+            <div class="menu-item__desc">Cold brew on nitrogen. Silky, no ice needed.</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Non-Coffee group -->
+      <div class="menu-group">
+        <div class="menu-group__label">Non-Coffee</div>
+
+        <a href="product-matcha.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Matcha Latte</div>
+            <div class="menu-item__desc">Ceremonial grade, oat or whole milk.</div>
+          </div>
+        </a>
+
+        <a href="product-chai.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Chai Latte</div>
+            <div class="menu-item__desc">House-spiced concentrate, steamed milk.</div>
+          </div>
+        </a>
+
+        <a href="product-hot-chocolate.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Hot Chocolate</div>
+            <div class="menu-item__desc">Valrhona 70%, whole milk.</div>
+          </div>
+        </a>
+
+        <a href="product-seasonal-specialty.html" class="menu-item menu-item--no-price">
+          <div>
+            <div class="menu-item__name">Seasonal Specialty</div>
+            <div class="menu-item__desc">Ask your barista.</div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Sticky hero image -->
+    <div class="drinks-sticky reveal-right" style="transition-delay:0.2s">
+      <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=900&q=85" alt="Coffee preparation" loading="lazy">
+      <div class="drinks-sticky__tag">Seasonal · Single Origin</div>
+    </div>
+  </div>
+</section>
+
+<!-- BAKERY SECTION -->
+<section class="bakery-section" id="bakery">
+  <div class="section-label reveal">
+    <div class="section-label__line"></div>
+    <span class="label">02 / Bakery</span>
+  </div>
+  <h2 class="h2 reveal" style="transition-delay:0.1s">Made here. Daily.</h2>
+
+  <div class="bakery-grid stagger">
+
+    <a href="product-pistachio-croissant.html" class="bakery-card">
+      <div class="bakery-card__img-wrap">
+        <img class="bakery-card__img" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=85" alt="Pistachio Croissant" loading="lazy">
+      </div>
+      <div class="bakery-card__body">
+        <div class="bakery-card__name">Pistachio Croissant</div>
+        <p class="bakery-card__desc">Laminated dough, pistachio frangipane, toasted.</p>
+      </div>
+    </a>
+
+    <a href="product-pain-au-chocolat.html" class="bakery-card">
+      <div class="bakery-card__img-wrap">
+        <img class="bakery-card__img" src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=85" alt="Pain au Chocolat" loading="lazy">
+      </div>
+      <div class="bakery-card__body">
+        <div class="bakery-card__name">Pain au Chocolat</div>
+        <p class="bakery-card__desc">Valrhona 64% dark chocolate, double layered.</p>
+      </div>
+    </a>
+
+    <a href="product-canele.html" class="bakery-card">
+      <div class="bakery-card__img-wrap">
+        <img class="bakery-card__img" src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=400&q=85" alt="Almond Canelé" loading="lazy">
+      </div>
+      <div class="bakery-card__body">
+        <div class="bakery-card__name">Almond Canelé</div>
+        <p class="bakery-card__desc">Classic Bordeaux recipe, baked in copper moulds.</p>
+      </div>
+    </a>
+
+    <a href="product-morning-bun.html" class="bakery-card">
+      <div class="bakery-card__img-wrap">
+        <img class="bakery-card__img" src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=400&q=85" alt="Morning Bun" loading="lazy">
+      </div>
+      <div class="bakery-card__body">
+        <div class="bakery-card__name">Morning Bun</div>
+        <p class="bakery-card__desc">Orange zest, cinnamon sugar, laminated.</p>
+      </div>
+    </a>
+
+    <a href="product-seasonal-tart.html" class="bakery-card">
+      <div class="bakery-card__img-wrap">
+        <img class="bakery-card__img" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=85" alt="Seasonal Tart" loading="lazy">
+      </div>
+      <div class="bakery-card__body">
+        <div class="bakery-card__name">Seasonal Tart</div>
+        <p class="bakery-card__desc">Changes weekly with what's in season.</p>
+      </div>
+    </a>
+
+    <a href="product-sourdough.html" class="bakery-card">
+      <div class="bakery-card__img-wrap">
+        <img class="bakery-card__img" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=85" alt="Sourdough Loaf" loading="lazy">
+      </div>
+      <div class="bakery-card__body">
+        <div class="bakery-card__name">Sourdough Loaf</div>
+        <p class="bakery-card__desc">36-hour cold ferment. Available whole or sliced.</p>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOD SECTION -->
+<section class="food-section" id="food">
+  <div class="section-label reveal">
+    <div class="section-label__line"></div>
+    <span class="label">03 / Food</span>
+  </div>
+  <h2 class="h2 reveal" style="transition-delay:0.1s">Seasonal plates.</h2>
+
+  <div class="food-layout">
+
+    <a href="product-avo-toast.html" class="food-item reveal">
+      <div class="food-item__name">Smashed Avo Toast</div>
+      <div class="food-item__desc">Sourdough, avocado, dukkah, chilli flake, soft-boiled egg.</div>
+    </a>
+
+    <a href="product-shakshuka.html" class="food-item reveal" style="transition-delay:0.05s">
+      <div class="food-item__name">Seasonal Shakshuka</div>
+      <div class="food-item__desc">Spiced tomato ragout, poached eggs, feta, herbs, pita.</div>
+    </a>
+
+    <a href="product-granola-bowl.html" class="food-item reveal" style="transition-delay:0.1s">
+      <div class="food-item__name">Granola Bowl</div>
+      <div class="food-item__desc">House granola, coconut yoghurt, seasonal fruit, honey.</div>
+    </a>
+
+    <a href="product-egg-toast.html" class="food-item reveal" style="transition-delay:0.15s">
+      <div class="food-item__name">Egg Toast</div>
+      <div class="food-item__desc">Soft-boiled egg, cultured butter, fleur de sel, sourdough.</div>
+    </a>
+
+    <a href="product-blt.html" class="food-item reveal" style="transition-delay:0.2s">
+      <div class="food-item__name">BLT Sandwich</div>
+      <div class="food-item__desc">Thick-cut bacon, heirloom tomato, aioli, butter lettuce, sourdough.</div>
+    </a>
+
+    <a href="product-acai-bowl.html" class="food-item reveal" style="transition-delay:0.25s">
+      <div class="food-item__name">Acai Bowl</div>
+      <div class="food-item__desc">Organic acai, seasonal fruits, house granola, honey, bee pollen.</div>
+    </a>
+
+    <a href="product-mushroom-toast.html" class="food-item reveal" style="transition-delay:0.3s">
+      <div class="food-item__name">Mushroom Toast</div>
+      <div class="food-item__desc">Sautéed mixed mushrooms, goat cheese, sourdough, truffle oil.</div>
+    </a>
+
+    <p class="food-note reveal" style="transition-delay:0.35s">
+      Menu changes seasonally. Ask your barista about today's specials.
+    </p>
+  </div>
+</section>
+
+<!-- LOCATION CTA -->
+<section class="location-cta">
+  <div class="location-cta__header">
+    <div class="section-label reveal">
+      <div class="section-label__line" style="background:rgba(255,255,255,0.2)"></div>
+      <span class="label" style="color:rgba(255,255,255,0.3)">Find us</span>
+    </div>
+    <h2 class="location-cta__title reveal" style="transition-delay:0.1s">Find your nearest location.</h2>
+    <p class="location-cta__subtitle reveal" style="transition-delay:0.2s">Prices and item availability vary by café. Visit your location page to see what's on.</p>
+  </div>
+  <div class="location-cta__grid stagger">
+
+    <div class="loc-mini-card">
+      <div class="loc-mini-badge loc-mini-badge--open">Open</div>
+      <div class="loc-mini-name">Midtown Bonita</div>
+      <div class="loc-mini-region">Bonita Springs, FL</div>
+      <a href="location-bonita.html" class="loc-mini-link">
+        View Menu
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div class="loc-mini-card">
+      <div class="loc-mini-badge loc-mini-badge--soon">Opening Soon</div>
+      <div class="loc-mini-name">Downtown Naples</div>
+      <div class="loc-mini-region">Naples, FL</div>
+      <a href="locations.html" class="loc-mini-link">
+        View Menu
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+    <div class="loc-mini-card">
+      <div class="loc-mini-badge loc-mini-badge--future">2026</div>
+      <div class="loc-mini-name">Estero Village</div>
+      <div class="loc-mini-region">Estero, FL</div>
+      <a href="locations.html" class="loc-mini-link">
+        View Menu
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <div>
+    <div class="section-label reveal">
+      <div class="section-label__line" style="background:rgba(255,255,255,0.2)"></div>
+      <span class="label" style="color:rgba(255,255,255,0.3)">Stay in the loop</span>
+    </div>
+    <h2 class="newsletter__title reveal">Seasonal drops,<br>events, and<br>early access.</h2>
+    <p class="newsletter__subtitle reveal">No ads, no fluff. Just the good stuff.</p>
+  </div>
+  <div class="newsletter__form reveal">
+    <div class="newsletter__input-row">
+      <input type="email" class="newsletter__input" placeholder="your@email.com">
+      <button class="newsletter__submit">Subscribe</button>
+    </div>
+    <p style="font-size:0.7rem;color:rgba(255,255,255,0.2)">By subscribing you agree to our Privacy Policy.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer__top">
+    <div>
+      <div class="footer__brand-name">Three Sixteen</div>
+      <p class="footer__brand-tagline">Coffee made with intention. Three cafes across Southwest Florida.</p>
+    </div>
+    <div>
+      <div class="footer__col-title">Explore</div>
+      <ul class="footer__links">
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="locations.html">Locations</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="shop.html">Shop</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Company</div>
+      <ul class="footer__links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html#careers">Careers</a></li>
+        <li><a href="about.html#press">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Community</div>
+      <ul class="footer__links">
+        <li><a href="#">Loyalty Club</a></li>
+        <li><a href="#">Transparency</a></li>
+        <li><a href="#">Partners</a></li>
+        <li><a href="#">Newsletter</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">© 2025 Three Sixteen Coffee & Bakery. All rights reserved.</span>
+    <span class="footer__copy">Bonita Springs · Naples · Estero</span>
+  </div>
+</footer>
+
+<script>
+// Animate hero words on page load
+document.querySelectorAll('.page-hero__title .word').forEach(w => {
+  w.style.transform = 'translateY(110%)';
+  w.style.display = 'inline-block';
+});
+document.querySelectorAll('.page-hero__subtitle .line').forEach(l => {
+  l.style.transform = 'translateY(110%)';
+  l.style.display = 'block';
+  l.style.overflow = 'hidden';
+});
+
+// Mark hero bg for load animation
+const heroBg = document.getElementById('heroBg');
+if (heroBg) {
+  const img = new Image();
+  img.onload = () => heroBg.classList.add('loaded');
+  img.src = 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=1800&q=80&fit=crop';
+}
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

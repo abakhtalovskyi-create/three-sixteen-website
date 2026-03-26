@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Locations — Three Sixteen</title>
+<link rel="stylesheet" href="css/main.css">
+<style>
+/* ─── PAGE-SPECIFIC: LOCATIONS ─── */
+
+/* Hero override — taller for locations */
+.page-hero--locations {
+  min-height: 70vh;
+}
+
+/* ─── LOCATIONS GRID SECTION ─── */
+.locations-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.locations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: clamp(2.5rem, 4vw, 4rem);
+}
+
+/* Tall dramatic cards */
+.location-card--tall {
+  aspect-ratio: 2 / 3;
+  min-height: 520px;
+}
+
+.location-card__img-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.location-card__hours {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.42);
+  margin-top: 0.25rem;
+  letter-spacing: 0.02em;
+}
+
+.location-card__cta--dark {
+  color: var(--black);
+  background: var(--beige);
+  padding: 0.65rem 1.25rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1.25rem;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out), background 0.2s;
+}
+.location-card__cta--dark:hover { background: var(--white); }
+.location-card:hover .location-card__cta--dark {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── NARRATIVE / EDITORIAL SECTION ─── */
+.narrative-section {
+  background: var(--black);
+  padding: var(--pad-y) var(--pad-x);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 8vw, 10rem);
+  align-items: center;
+  overflow: hidden;
+}
+
+.narrative__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.narrative__eyebrow-line {
+  width: 32px;
+  height: 1px;
+  background: var(--warm);
+}
+
+.narrative__eyebrow span {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+
+.narrative__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 2rem;
+}
+
+.narrative__headline em {
+  font-style: italic;
+  color: var(--beige);
+}
+
+.narrative__body {
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  line-height: 1.75;
+  color: rgba(255,255,255,0.45);
+  max-width: 460px;
+}
+
+.narrative__body + .narrative__body {
+  margin-top: 1rem;
+}
+
+.narrative__stat-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+}
+
+.narrative__big-num {
+  font-family: var(--font-serif);
+  font-size: clamp(10rem, 22vw, 22rem);
+  font-weight: 700;
+  line-height: 0.85;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.08);
+  letter-spacing: -0.06em;
+  user-select: none;
+  transition: -webkit-text-stroke 0.6s var(--ease-out);
+}
+
+.narrative__stat-side:hover .narrative__big-num {
+  -webkit-text-stroke: 1px rgba(196,149,106,0.25);
+}
+
+.narrative__stat-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-top: 1.5rem;
+  text-align: right;
+}
+
+.narrative__stat-label strong {
+  display: block;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  color: var(--warm);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+/* ─── REGION MAP SECTION ─── */
+.region-section {
+  background: var(--beige);
+  padding: var(--pad-y) var(--pad-x);
+  overflow: hidden;
+  position: relative;
+}
+
+.region-section__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 8vw, 8rem);
+  align-items: start;
+}
+
+.region__label-col {
+  position: relative;
+}
+
+.region__heading {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--black);
+  margin-bottom: 1.5rem;
+}
+
+.region__subtext {
+  font-size: clamp(0.9rem, 1.3vw, 1rem);
+  color: var(--mid);
+  line-height: 1.7;
+  max-width: 380px;
+  margin-bottom: 3rem;
+}
+
+.region__bg-text {
+  position: absolute;
+  bottom: -2rem;
+  left: -1rem;
+  font-family: var(--font-serif);
+  font-size: clamp(6rem, 14vw, 14rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(17,17,17,0.07);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Mini location cards (horizontal) */
+.region-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.region-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid rgba(17,17,17,0.1);
+  position: relative;
+  overflow: hidden;
+  transition: padding-left 0.4s var(--ease-out);
+  cursor: default;
+}
+
+.region-card:first-child {
+  border-top: 1px solid rgba(17,17,17,0.1);
+}
+
+.region-card:hover {
+  padding-left: 0.75rem;
+}
+
+.region-card__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.region-card__dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: 0.3;
+}
+
+.region-card__dot--open {
+  background: var(--warm);
+  color: var(--warm);
+  box-shadow: 0 0 8px rgba(196,149,106,0.5);
+}
+
+.region-card__dot--soon {
+  background: #4a7c6a;
+  color: #4a7c6a;
+}
+
+.region-card__dot--future {
+  background: #3a6a9c;
+  color: #3a6a9c;
+}
+
+.region-card__info {
+  flex: 1;
+}
+
+.region-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: -0.01em;
+}
+
+.region-card__city {
+  font-size: 0.75rem;
+  color: var(--mid);
+  margin-top: 0.15rem;
+}
+
+.region-card__status {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0;
+}
+
+.region-card__status--open {
+  background: rgba(196,149,106,0.12);
+  color: var(--warm);
+  border: 1px solid rgba(196,149,106,0.3);
+}
+
+.region-card__status--soon {
+  background: rgba(45,74,62,0.1);
+  color: #2d4a3e;
+  border: 1px solid rgba(45,74,62,0.2);
+}
+
+.region-card__status--future {
+  background: rgba(26,58,92,0.1);
+  color: #1a3a5c;
+  border: 1px solid rgba(26,58,92,0.2);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .locations-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .locations-grid > *:last-child {
+    grid-column: span 2;
+    aspect-ratio: 16 / 9;
+    min-height: 400px;
+  }
+  .narrative-section {
+    grid-template-columns: 1fr;
+  }
+  .narrative__stat-side {
+    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  .narrative__big-num {
+    font-size: clamp(8rem, 18vw, 16rem);
+  }
+  .narrative__stat-label {
+    text-align: left;
+  }
+  .region-section__inner {
+    grid-template-columns: 1fr;
+  }
+  .region__bg-text {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .locations-grid {
+    grid-template-columns: 1fr;
+  }
+  .locations-grid > *:last-child {
+    grid-column: span 1;
+    aspect-ratio: 2 / 3;
+    min-height: 480px;
+  }
+  .location-card--tall {
+    min-height: 420px;
+  }
+  .narrative__stat-side {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .narrative__big-num {
+    font-size: clamp(6rem, 28vw, 12rem);
+  }
+  .region-section__inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="page-transition"></div>
+<div class="scroll-progress"></div>
+
+<!-- Mobile overlay -->
+<div class="nav-overlay" id="navOverlay">
+  <ul class="nav-overlay__links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-overlay__footer">Bonita Springs · Naples · Estero</div>
+</div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader__logo">Three Sixteen</div>
+  <div class="loader__bar-container"><div class="loader__bar" id="loaderBar"></div></div>
+  <div class="loader__num" id="loaderNum">0%</div>
+</div>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"></div>
+</div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Three Sixteen</a>
+  <ul class="nav-links">
+    <li><a href="locations.html" class="active">Locations</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="location-bonita.html" class="nav-cta">Find a Location</a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="page-hero page-hero--locations" id="pageHero">
+  <div class="page-hero__bg" id="heroBg" style="background-image: url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1800&q=85&fit=crop');"></div>
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content">
+    <div class="page-hero__eyebrow">
+      <div class="page-hero__eyebrow-line"></div>
+      <span>Our Locations</span>
+    </div>
+    <h1 class="page-hero__title">
+      <span class="line"><span class="word">Three cafes.</span></span>
+      <span class="line"><span class="word"><em>One story.</em></span></span>
+    </h1>
+    <div class="page-hero__subtitle">
+      <span class="line">Each space is designed to slow you down —</span>
+      <span class="line">a neighbourhood anchor, not a quick stop.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     LOCATIONS GRID
+════════════════════════════════════════ -->
+<section class="locations-section">
+
+  <div class="section-label reveal">
+    <div class="section-label__line"></div>
+    <span class="label">Where to find us</span>
+  </div>
+
+  <div class="locations-grid stagger">
+
+    <!-- Card 1: Midtown Bonita — OPEN -->
+    <a href="location-bonita.html" class="location-card location-card--tall" style="display:block; text-decoration:none;">
+      <div class="location-card__img-wrap">
+        <img
+          class="location-card__img"
+          src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&q=85&fit=crop"
+          alt="Midtown Bonita cafe interior"
+          loading="lazy"
+        >
+      </div>
+      <div class="location-card__overlay"></div>
+      <div class="location-card__content">
+        <div class="location-card__badge" style="background: var(--warm);">Now Open</div>
+        <div class="location-card__name">Midtown Bonita</div>
+        <div class="location-card__city">Bonita Springs, FL</div>
+        <div class="location-card__hours">Mon–Fri 6:30am–5pm &middot; Sat–Sun 7am–4pm</div>
+        <span class="location-card__cta">
+          Visit this location
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- Card 2: Downtown Naples — OPENING SOON -->
+    <div class="location-card location-card--tall">
+      <div class="location-card__img-wrap">
+        <img
+          class="location-card__img"
+          src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=900&q=85&fit=crop"
+          alt="Downtown Naples cafe"
+          loading="lazy"
+        >
+      </div>
+      <div class="location-card__overlay"></div>
+      <div class="location-card__content">
+        <div class="location-card__badge" style="background: #2d4a3e; color: #ffffff;">Opening Soon</div>
+        <div class="location-card__name">Downtown Naples</div>
+        <div class="location-card__city">Naples, FL</div>
+        <div class="location-card__hours">Opening Spring 2025</div>
+        <a href="#newsletter" class="location-card__cta--dark">
+          Get Notified
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style="display:inline-block;vertical-align:middle;margin-left:0.4rem;">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 3: Estero Village — COMING 2026 -->
+    <div class="location-card location-card--tall">
+      <div class="location-card__img-wrap">
+        <img
+          class="location-card__img"
+          src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=900&q=85&fit=crop"
+          alt="Estero Village cafe"
+          loading="lazy"
+        >
+      </div>
+      <div class="location-card__overlay"></div>
+      <div class="location-card__content">
+        <div class="location-card__badge" style="background: #1a3a5c; color: #ffffff;">Coming 2026</div>
+        <div class="location-card__name">Estero Village</div>
+        <div class="location-card__city">Estero, FL</div>
+        <div class="location-card__hours">More details coming soon</div>
+        <a href="#newsletter" class="location-card__cta--dark">
+          Learn More
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" style="display:inline-block;vertical-align:middle;margin-left:0.4rem;">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     NARRATIVE / EDITORIAL SECTION
+════════════════════════════════════════ -->
+<section class="narrative-section">
+
+  <div class="narrative__text reveal-left">
+    <div class="narrative__eyebrow">
+      <div class="narrative__eyebrow-line"></div>
+      <span>Our Approach</span>
+    </div>
+    <h2 class="narrative__headline">
+      Growth, on<br><em>our own terms.</em>
+    </h2>
+    <p class="narrative__body">
+      Every new neighbourhood we enter is a deliberate choice. We don't expand for the sake of scale — we expand when we find a community that wants what we build.
+    </p>
+    <p class="narrative__body">
+      That means fewer locations, opened more slowly, designed with more care. By 2026, three cafes across Southwest Florida. That's it. That's the plan.
+    </p>
+  </div>
+
+  <div class="narrative__stat-side reveal-right">
+    <div>
+      <div class="narrative__big-num" aria-hidden="true">3</div>
+      <div class="narrative__stat-label">
+        <strong>Locations by 2026</strong>
+        Southwest Florida
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     REGION / MAP VISUAL SECTION
+════════════════════════════════════════ -->
+<section class="region-section">
+
+  <div class="region-section__inner">
+
+    <div class="region__label-col reveal-left">
+      <div class="section-label" style="margin-bottom: 2rem;">
+        <div class="section-label__line"></div>
+        <span class="label">Our Region</span>
+      </div>
+      <h2 class="region__heading">Southwest<br>Florida</h2>
+      <p class="region__subtext">
+        Three towns. One coastline. We chose this stretch of Florida intentionally — a region where community matters and quality of life is taken seriously.
+      </p>
+      <span class="region__bg-text" aria-hidden="true">SWF</span>
+    </div>
+
+    <div class="region-cards reveal-right">
+
+      <!-- Open -->
+      <div class="region-card">
+        <div class="region-card__dot region-card__dot--open"></div>
+        <div class="region-card__info">
+          <div class="region-card__name">Midtown Bonita</div>
+          <div class="region-card__city">Bonita Springs, FL</div>
+        </div>
+        <div class="region-card__status region-card__status--open">Now Open</div>
+      </div>
+
+      <!-- Opening Soon -->
+      <div class="region-card">
+        <div class="region-card__dot region-card__dot--soon"></div>
+        <div class="region-card__info">
+          <div class="region-card__name">Downtown Naples</div>
+          <div class="region-card__city">Naples, FL</div>
+        </div>
+        <div class="region-card__status region-card__status--soon">Spring 2025</div>
+      </div>
+
+      <!-- Coming 2026 -->
+      <div class="region-card">
+        <div class="region-card__dot region-card__dot--future"></div>
+        <div class="region-card__info">
+          <div class="region-card__name">Estero Village</div>
+          <div class="region-card__city">Estero, FL</div>
+        </div>
+        <div class="region-card__status region-card__status--future">Coming 2026</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     NEWSLETTER
+════════════════════════════════════════ -->
+<div class="newsletter" id="newsletter">
+  <div class="reveal">
+    <h2 class="newsletter__title">Stay in the loop.</h2>
+    <p class="newsletter__subtitle">New openings, seasonal menus, and updates worth reading — straight to you.</p>
+  </div>
+  <div class="reveal">
+    <form class="newsletter__form" onsubmit="return false;">
+      <div class="newsletter__input-row">
+        <input type="email" class="newsletter__input" placeholder="Your email address" aria-label="Email address">
+        <button type="submit" class="newsletter__submit">Subscribe</button>
+      </div>
+      <p class="caption">No noise. Unsubscribe any time.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="footer__top">
+    <div>
+      <div class="footer__brand-name">Three Sixteen</div>
+      <p class="footer__brand-tagline">Coffee made with intention. Three cafes across Southwest Florida.</p>
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram">Ig</a>
+        <a href="#" aria-label="Facebook">Fb</a>
+        <a href="#" aria-label="Twitter / X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Explore</div>
+      <ul class="footer__links">
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="locations.html">Locations</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="shop.html">Shop</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Company</div>
+      <ul class="footer__links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html#careers">Careers</a></li>
+        <li><a href="about.html#press">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Community</div>
+      <ul class="footer__links">
+        <li><a href="#">Loyalty Club</a></li>
+        <li><a href="#">Transparency</a></li>
+        <li><a href="#">Partners</a></li>
+        <li><a href="#">Newsletter</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2025 Three Sixteen Coffee &amp; Bakery. All rights reserved.</span>
+    <span class="footer__copy">Bonita Springs &middot; Naples &middot; Estero</span>
+  </div>
+</footer>
+
+<script>
+// ─── Init hero word animations ───
+document.querySelectorAll('.page-hero__title .word').forEach(w => {
+  w.style.transform = 'translateY(110%)';
+  w.style.display = 'inline-block';
+});
+
+// ─── Trigger hero BG parallax load ───
+const heroBg = document.getElementById('heroBg');
+if (heroBg) {
+  const img = new Image();
+  img.onload = () => heroBg.classList.add('loaded');
+  img.src = heroBg.style.backgroundImage.replace(/url\(['"]?([^'"]+)['"]?\)/, '$1');
+}
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>

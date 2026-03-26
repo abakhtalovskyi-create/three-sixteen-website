@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Midtown Bonita — Three Sixteen</title>
+<link rel="stylesheet" href="css/main.css">
+<style>
+
+/* ─── INFO STRIP ─── */
+.info-strip {
+  background: var(--dark);
+  padding: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.info-strip__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.info-strip__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 2.5rem var(--pad-x);
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.info-strip__item:last-child { border-right: none; }
+.info-strip__icon {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+.info-strip__icon svg { color: var(--warm); }
+.info-strip__text {}
+.info-strip__label {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+.info-strip__value {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.55;
+}
+
+/* ─── STORY SECTION ─── */
+.story-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+.story-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 8vw, 8rem);
+  align-items: center;
+}
+.story__label {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 2rem;
+}
+.story__label-line { width: 32px; height: 1px; background: var(--black); opacity: 0.2; }
+.story__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 2rem;
+}
+.story__body { display: flex; flex-direction: column; gap: 1.25rem; }
+.story__body p {
+  font-size: clamp(0.92rem, 1.2vw, 1.05rem);
+  line-height: 1.75;
+  color: var(--mid);
+}
+.story__image {
+  position: relative;
+  aspect-ratio: 4/5;
+  overflow: hidden;
+}
+.story__image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* ─── LOCATION MENU SECTION ─── */
+.location-menu {
+  background: var(--black);
+  padding: var(--pad-y) var(--pad-x);
+}
+.location-menu__header {
+  display: flex; justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap; gap: 2rem;
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+}
+.location-menu__headline-block {}
+.location-menu__label {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.location-menu__label-line { width: 32px; height: 1px; background: rgba(255,255,255,0.15); }
+.location-menu__label span {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  font-weight: 500;
+}
+.location-menu__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  color: var(--white);
+}
+.location-menu__subtitle {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.3);
+  margin-top: 1rem;
+  letter-spacing: 0.02em;
+}
+
+/* Tabs */
+.menu-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 0;
+}
+.menu-tab {
+  background: none;
+  border: none;
+  padding: 1rem 2rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+.menu-tab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 1px;
+  background: var(--warm);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-out);
+}
+.menu-tab.active { color: var(--white); }
+.menu-tab.active::after { transform: scaleX(1); }
+.menu-tab:hover { color: rgba(255,255,255,0.7); }
+
+/* Panels */
+.menu-panel { display: none; }
+.menu-panel.active { display: block; }
+.menu-panel__grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.location-menu__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 3rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--beige);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(224,215,196,0.25);
+  padding-bottom: 0.35rem;
+  transition: color 0.2s, border-color 0.2s, gap 0.3s var(--ease-out);
+}
+.location-menu__cta:hover { color: var(--white); border-color: var(--white); gap: 1rem; }
+
+/* ─── GALLERY SECTION ─── */
+.gallery-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+.gallery__header {
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+}
+.gallery__label {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.gallery__label-line { width: 32px; height: 1px; background: var(--black); opacity: 0.2; }
+.gallery__label span {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(17,17,17,0.4);
+  font-weight: 500;
+}
+.gallery__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  color: var(--black);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 6px;
+}
+.gallery-item {
+  overflow: hidden;
+  position: relative;
+  background: var(--dark);
+}
+.gallery-item--tall { grid-row: span 2; }
+.gallery-item--wide { grid-column: span 2; }
+.gallery-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  min-height: 280px;
+  transition: transform 0.8s var(--ease-out), filter 0.6s;
+  filter: brightness(0.92);
+}
+.gallery-item--tall img { min-height: 560px; }
+.gallery-item--wide img { min-height: 320px; }
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: brightness(1);
+}
+
+/* ─── TEAM SECTION ─── */
+.team-section {
+  background: var(--black);
+  padding: var(--pad-y) var(--pad-x);
+}
+.team__header {
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+}
+.team__label {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.team__label-line { width: 32px; height: 1px; background: rgba(255,255,255,0.15); }
+.team__label span {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  font-weight: 500;
+}
+.team__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: var(--white);
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.team-card {
+  background: var(--dark);
+  overflow: hidden;
+  position: relative;
+  transition: background 0.3s;
+}
+.team-card:hover { background: #222; }
+.team-card__photo {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+.team-card__photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(20%) brightness(0.9);
+  transition: transform 0.8s var(--ease-out), filter 0.6s;
+}
+.team-card:hover .team-card__photo img {
+  transform: scale(1.05);
+  filter: grayscale(0%) brightness(1);
+}
+.team-card__info {
+  padding: 1.75rem 2rem 2.25rem;
+}
+.team-card__name {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+.team-card__role {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin-bottom: 0.9rem;
+}
+.team-card__bio {
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,0.45);
+}
+
+/* ─── REVIEWS SECTION ─── */
+.reviews-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+}
+.reviews__header {
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.reviews__label {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.reviews__label-line { width: 32px; height: 1px; background: var(--black); opacity: 0.2; }
+.reviews__label span {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(17,17,17,0.4);
+  font-weight: 500;
+}
+.reviews__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1;
+  color: var(--warm);
+}
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+}
+.review-card {
+  background: var(--white);
+  border: 1px solid rgba(17,17,17,0.08);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: box-shadow 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.review-card:hover {
+  box-shadow: 0 12px 48px rgba(17,17,17,0.1);
+  transform: translateY(-4px);
+}
+.review-card__stars {
+  color: var(--warm);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+}
+.review-card__quote {
+  font-size: clamp(0.9rem, 1.1vw, 1rem);
+  line-height: 1.75;
+  color: var(--black);
+  font-style: italic;
+  flex: 1;
+}
+.review-card__meta {}
+.review-card__author {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--black);
+}
+.review-card__date {
+  font-size: 0.72rem;
+  color: var(--mid);
+  margin-top: 0.2rem;
+}
+
+/* ─── JOURNAL SECTION (location) ─── */
+.location-journal {
+  background: var(--black);
+  padding: var(--pad-y) var(--pad-x);
+}
+.location-journal__header {
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+}
+.location-journal__label {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.location-journal__label-line { width: 32px; height: 1px; background: rgba(255,255,255,0.15); }
+.location-journal__label span {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  font-weight: 500;
+}
+.location-journal__headline {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: var(--white);
+}
+.journal-grid--two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+}
+
+/* ─── PAGE-SPECIFIC HERO CTA ROW ─── */
+.page-hero__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  overflow: hidden;
+}
+.page-hero__actions .actions-line {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  transform: translateY(110%);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .info-strip__grid { grid-template-columns: repeat(2, 1fr); }
+  .info-strip__item:nth-child(2) { border-right: none; }
+  .info-strip__item:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.06); border-top: 1px solid rgba(255,255,255,0.06); }
+  .info-strip__item:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.06); }
+  .story-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .story__image { max-width: 500px; margin: 0 auto; }
+  .team-grid { grid-template-columns: repeat(3, 1fr); }
+  .reviews-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .info-strip__grid { grid-template-columns: 1fr; }
+  .info-strip__item { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .info-strip__item:last-child { border-bottom: none; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-item--tall, .gallery-item--wide { grid-row: auto; grid-column: auto; }
+  .gallery-item img { min-height: 260px !important; }
+  .team-grid {
+    grid-template-columns: 1fr;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    display: flex;
+  }
+  .team-card {
+    min-width: 78vw;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .journal-grid--two { grid-template-columns: 1fr; }
+  .location-menu__header { flex-direction: column; align-items: flex-start; }
+  .story-layout { grid-template-columns: 1fr; }
+  .menu-tab { padding: 0.75rem 1rem; font-size: 0.68rem; }
+}
+@media (max-width: 480px) {
+  .team-card { min-width: 88vw; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ─── PAGE TRANSITION ─── -->
+<div class="page-transition"></div>
+
+<!-- ─── SCROLL PROGRESS ─── -->
+<div class="scroll-progress"></div>
+
+<!-- ─── MOBILE NAV OVERLAY ─── -->
+<div class="nav-overlay" id="navOverlay">
+  <ul class="nav-overlay__links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="locations.html" class="active">Locations</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-overlay__footer">Three Sixteen Coffee &mdash; Bonita Springs, FL</div>
+</div>
+
+<!-- ─── LOADER ─── -->
+<div id="loader">
+  <div class="loader__logo">Three Sixteen</div>
+  <div class="loader__bar-container">
+    <div class="loader__bar" id="loaderBar"></div>
+  </div>
+  <div class="loader__num" id="loaderNum">0%</div>
+</div>
+
+<!-- ─── CUSTOM CURSOR ─── -->
+<div class="cursor" id="cursor">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"></div>
+</div>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Three Sixteen</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="locations.html" class="active">Locations</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="menu.html" class="nav-cta">Order Now</a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 1. HERO -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="page-hero page-hero--tall">
+  <div class="page-hero__bg" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1800&q=80&fit=crop');"></div>
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content">
+    <div class="page-hero__eyebrow">
+      <div class="page-hero__eyebrow-line"></div>
+      <span>Now Open &middot; Bonita Springs, FL</span>
+    </div>
+    <h1 class="page-hero__title">
+      <span class="line"><span class="word">Midtown</span></span>
+      <span class="line"><span class="word">Bonita.</span></span>
+    </h1>
+    <p class="page-hero__subtitle">
+      <span class="line">Our original location — where it all began.</span>
+      <span class="line">A quiet corner for intentional coffee in Southwest Florida.</span>
+    </p>
+    <div class="page-hero__actions">
+      <div class="actions-line">
+        <a href="https://maps.google.com" target="_blank" class="btn-primary">
+          <span>Get Directions</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="menu.html" class="btn-ghost">
+          <span>View Menu</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 2. INFO STRIP -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="info-strip">
+  <div class="info-strip__grid">
+
+    <div class="info-strip__item">
+      <div class="info-strip__icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="info-strip__text">
+        <div class="info-strip__label">Hours</div>
+        <div class="info-strip__value">Mon–Fri &nbsp;6:30am – 5:00pm<br>Sat–Sun &nbsp;7:00am – 4:00pm</div>
+      </div>
+    </div>
+
+    <div class="info-strip__item">
+      <div class="info-strip__icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </div>
+      <div class="info-strip__text">
+        <div class="info-strip__label">Address</div>
+        <div class="info-strip__value">123 Midtown Ave<br>Bonita Springs, FL 34135</div>
+      </div>
+    </div>
+
+    <div class="info-strip__item">
+      <div class="info-strip__icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.36 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.77-.77a2 2 0 0 1 2.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div class="info-strip__text">
+        <div class="info-strip__label">Phone</div>
+        <div class="info-strip__value">(239) 555-0316</div>
+      </div>
+    </div>
+
+    <div class="info-strip__item">
+      <div class="info-strip__icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M1 9h22"/><path d="M8 3v6"/><path d="M16 3v6"/><path d="M12 17h.01"/></svg>
+      </div>
+      <div class="info-strip__text">
+        <div class="info-strip__label">Parking</div>
+        <div class="info-strip__value">Free parking available<br>Adjacent lot, all day</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 3. STORY SECTION -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="story-section">
+  <div class="story-layout">
+
+    <div class="story__content reveal-left">
+      <div class="story__label">
+        <div class="story__label-line"></div>
+        <span class="label">Our Story</span>
+      </div>
+      <h2 class="story__headline">A corner built<br><em>for slowing down.</em></h2>
+      <div class="story__body">
+        <p>When we first drove through Midtown Bonita, we weren't looking for a location — we were looking for a feeling. A pocket of the neighborhood that felt unhurried, one where people actually stopped moving long enough to taste what was in their cup. We found it on the corner of Midtown Ave, in a storefront with high ceilings, morning light, and just enough room to do things right.</p>
+        <p>The design here is deliberate: warm plaster, reclaimed wood, and a bar low enough that you can watch every pour. Our sourcing relationships are just as considered — direct-trade lots from Colombia, Ethiopia, and Guatemala, roasted locally and adjusted for Florida's humidity. Every item on the menu is made here. Nothing is shipped in. This is the original Three Sixteen, and it still runs the way we intended it to.</p>
+      </div>
+    </div>
+
+    <div class="story__image img-reveal reveal-right">
+      <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=900&q=85&fit=crop" alt="Three Sixteen Midtown Bonita interior" loading="lazy">
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 4. LOCATION MENU SECTION -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="location-menu">
+
+  <div class="location-menu__header reveal">
+    <div class="location-menu__headline-block">
+      <div class="location-menu__label">
+        <div class="location-menu__label-line"></div>
+        <span>What we serve here</span>
+      </div>
+      <h2 class="location-menu__title">Menu</h2>
+      <p class="location-menu__subtitle">Prices apply at this location only.</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="menu-tabs reveal">
+    <button class="menu-tab active" data-tab="tab-drinks">Drinks</button>
+    <button class="menu-tab" data-tab="tab-bakery">Bakery</button>
+    <button class="menu-tab" data-tab="tab-food">Food</button>
+  </div>
+
+  <!-- Drinks Panel -->
+  <div class="menu-panel active" id="tab-drinks">
+    <div class="menu-panel__grid stagger">
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Espresso</div>
+          <div class="menu-item__desc">Double shot, single origin</div>
+        </div>
+        <div class="menu-item__price">$4.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Oat Flat White</div>
+          <div class="menu-item__desc">Ristretto, Oatly oat milk</div>
+        </div>
+        <div class="menu-item__price">$6.50</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Lavender Latte</div>
+          <div class="menu-item__desc">House lavender, oat milk</div>
+        </div>
+        <div class="menu-item__price">$7.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Cold Brew</div>
+          <div class="menu-item__desc">18hr steeping, black</div>
+        </div>
+        <div class="menu-item__price">$5.50</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Matcha Latte</div>
+          <div class="menu-item__desc">Ceremonial grade, oat milk</div>
+        </div>
+        <div class="menu-item__price">$6.50</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Seasonal Special</div>
+          <div class="menu-item__desc">Ask your barista</div>
+        </div>
+        <div class="menu-item__price">MP</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bakery Panel -->
+  <div class="menu-panel" id="tab-bakery">
+    <div class="menu-panel__grid stagger">
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Pistachio Croissant</div>
+          <div class="menu-item__desc">Frangipane, roasted pistachio</div>
+        </div>
+        <div class="menu-item__price">$6.50</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Almond Canelé</div>
+          <div class="menu-item__desc">Classic Bordeaux style</div>
+        </div>
+        <div class="menu-item__price">$4.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Seasonal Tart</div>
+          <div class="menu-item__desc">Changes weekly</div>
+        </div>
+        <div class="menu-item__price">$8.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Sourdough Loaf</div>
+          <div class="menu-item__desc">36hr ferment</div>
+        </div>
+        <div class="menu-item__price">$12.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Morning Bun</div>
+          <div class="menu-item__desc">Orange zest, cinnamon sugar</div>
+        </div>
+        <div class="menu-item__price">$4.50</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Pain au Chocolat</div>
+          <div class="menu-item__desc">Valrhona dark</div>
+        </div>
+        <div class="menu-item__price">$5.00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Food Panel -->
+  <div class="menu-panel" id="tab-food">
+    <div class="menu-panel__grid stagger">
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Smashed Avo Toast</div>
+          <div class="menu-item__desc">Sourdough, avocado, dukkah</div>
+        </div>
+        <div class="menu-item__price">$14.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Shakshuka</div>
+          <div class="menu-item__desc">Spiced tomato, poached eggs, feta</div>
+        </div>
+        <div class="menu-item__price">$16.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Granola Bowl</div>
+          <div class="menu-item__desc">Seasonal fruit, house granola</div>
+        </div>
+        <div class="menu-item__price">$11.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Egg Toast</div>
+          <div class="menu-item__desc">Soft-boiled, herb butter</div>
+        </div>
+        <div class="menu-item__price">$12.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">BLT Sandwich</div>
+          <div class="menu-item__desc">Thick-cut bacon, heirloom tomato</div>
+        </div>
+        <div class="menu-item__price">$14.00</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Acai Bowl</div>
+          <div class="menu-item__desc">Seasonal fruits, honey</div>
+        </div>
+        <div class="menu-item__price">$13.00</div>
+      </div>
+    </div>
+  </div>
+
+  <a href="menu.html" class="location-menu__cta reveal">
+    See Full Menu
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 5. GALLERY SECTION -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="gallery-section">
+
+  <div class="gallery__header reveal">
+    <div class="gallery__label">
+      <div class="gallery__label-line"></div>
+      <span>Inside the space</span>
+    </div>
+    <h2 class="gallery__headline">The café.</h2>
+  </div>
+
+  <div class="gallery-grid stagger">
+    <!-- Tall — spans 2 rows -->
+    <div class="gallery-item gallery-item--tall">
+      <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=85&fit=crop" alt="Three Sixteen interior" loading="lazy">
+    </div>
+    <!-- Normal -->
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800&q=85&fit=crop" alt="Coffee detail" loading="lazy">
+    </div>
+    <!-- Normal -->
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800&q=85&fit=crop" alt="Café atmosphere" loading="lazy">
+    </div>
+    <!-- Wide — spans 2 columns -->
+    <div class="gallery-item gallery-item--wide">
+      <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=85&fit=crop" alt="Café bar" loading="lazy">
+    </div>
+    <!-- Normal -->
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=85&fit=crop" alt="Latte art" loading="lazy">
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 6. TEAM SECTION -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="team-section">
+
+  <div class="team__header reveal">
+    <div class="team__label">
+      <div class="team__label-line"></div>
+      <span>The team</span>
+    </div>
+    <h2 class="team__headline">The people<br>behind the bar.</h2>
+  </div>
+
+  <div class="team-grid stagger">
+
+    <div class="team-card">
+      <div class="team-card__photo">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=85&fit=crop&crop=faces" alt="Andrii B." loading="lazy">
+      </div>
+      <div class="team-card__info">
+        <div class="team-card__name">Andrii B.</div>
+        <div class="team-card__role">Founder &amp; Operator</div>
+        <p class="team-card__bio">Started Three Sixteen to prove that intentional coffee and community belong together.</p>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-card__photo">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=85&fit=crop&crop=faces" alt="Sarah Chen" loading="lazy">
+      </div>
+      <div class="team-card__info">
+        <div class="team-card__name">Sarah Chen</div>
+        <div class="team-card__role">Head Barista</div>
+        <p class="team-card__bio">7 years in specialty coffee. She trains every barista who joins the team.</p>
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-card__photo">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85&fit=crop&crop=faces" alt="James Park" loading="lazy">
+      </div>
+      <div class="team-card__info">
+        <div class="team-card__name">James Park</div>
+        <div class="team-card__role">Head Baker</div>
+        <p class="team-card__bio">Trained in Lyon, makes everything in-house from scratch, daily.</p>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 7. REVIEWS SECTION -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="reviews-section">
+
+  <div class="reviews__header reveal">
+    <div>
+      <div class="reviews__label">
+        <div class="reviews__label-line"></div>
+        <span>What guests say</span>
+      </div>
+      <div class="reviews__headline">★★★★★</div>
+    </div>
+  </div>
+
+  <div class="reviews-grid stagger">
+
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__quote">"The best flat white I've had outside of Melbourne. The space is perfect for remote work."</p>
+      <div class="review-card__meta">
+        <div class="review-card__author">Marcus T.</div>
+        <div class="review-card__date">Jan 2025</div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__quote">"Finally a coffee shop that takes it seriously. The lavender latte changed my morning routine."</p>
+      <div class="review-card__meta">
+        <div class="review-card__author">Priya M.</div>
+        <div class="review-card__date">Feb 2025</div>
+      </div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-card__stars">★★★★★</div>
+      <p class="review-card__quote">"We drive 20 minutes every weekend just for the pistachio croissant. Worth every mile."</p>
+      <div class="review-card__meta">
+        <div class="review-card__author">Rebecca S.</div>
+        <div class="review-card__date">Mar 2025</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- 8. RELATED JOURNAL ARTICLES -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="location-journal">
+
+  <div class="location-journal__header reveal">
+    <div class="location-journal__label">
+      <div class="location-journal__label-line"></div>
+      <span>From the Journal</span>
+    </div>
+    <h2 class="location-journal__headline">Stories from<br>this location.</h2>
+  </div>
+
+  <div class="journal-grid--two stagger">
+
+    <div class="article-card">
+      <img class="article-card__img" src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=85" alt="Opening our first location" loading="lazy">
+      <div class="article-card__content">
+        <div class="article-card__category">Behind the Counter</div>
+        <h3 class="article-card__title">Opening Our First Location: What We Learned</h3>
+        <div class="article-card__meta">Jan 2025</div>
+      </div>
+    </div>
+
+    <div class="article-card">
+      <img class="article-card__img" src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=85" alt="Bonita Farmers Market" loading="lazy">
+      <div class="article-card__content">
+        <div class="article-card__category">Community</div>
+        <h3 class="article-card__title">The Bonita Farmers Market: Our Ingredient Story</h3>
+        <div class="article-card__meta">Nov 2024</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- NEWSLETTER -->
+<!-- ═══════════════════════════════════════════ -->
+<section class="newsletter">
+  <div class="reveal">
+    <h2 class="newsletter__title">Stay close<br>to the cup.</h2>
+    <p class="newsletter__subtitle">Seasonal menus, new offerings, and stories from the bar.</p>
+  </div>
+  <div class="reveal">
+    <form class="newsletter__form" onsubmit="return false;">
+      <div class="newsletter__input-row">
+        <input type="email" class="newsletter__input" placeholder="Your email address">
+        <button type="submit" class="newsletter__submit">Subscribe</button>
+      </div>
+      <p style="font-size:0.72rem; color:rgba(255,255,255,0.2); line-height:1.5;">No spam. Just coffee. Unsubscribe anytime.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ═══════════════════════════════════════════ -->
+<footer>
+  <div class="footer__top">
+    <div>
+      <div class="footer__brand-name">Three Sixteen</div>
+      <p class="footer__brand-tagline">Specialty coffee and craft bakery. Southwest Florida.</p>
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram">Ig</a>
+        <a href="#" aria-label="Twitter">Tw</a>
+        <a href="#" aria-label="Facebook">Fb</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Visit</div>
+      <ul class="footer__links">
+        <li><a href="locations.html">All Locations</a></li>
+        <li><a href="location-bonita.html">Midtown Bonita</a></li>
+        <li><a href="#">Naples Downtown</a></li>
+        <li><a href="#">Fort Myers</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Explore</div>
+      <ul class="footer__links">
+        <li><a href="menu.html">Full Menu</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Midtown Bonita</div>
+      <ul class="footer__links">
+        <li><a href="#">123 Midtown Ave</a></li>
+        <li><a href="#">Bonita Springs, FL 34135</a></li>
+        <li><a href="tel:2395550316">(239) 555-0316</a></li>
+        <li><a href="mailto:hello@threesixteen.co">hello@threesixteen.co</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2025 Three Sixteen Coffee. All rights reserved.</span>
+    <span class="footer__copy">Bonita Springs, FL &mdash; Where it all began.</span>
+  </div>
+</footer>
+
+<!-- ─── HERO WORDS INIT ─── -->
+<script>
+document.querySelectorAll('.page-hero__title .word').forEach(w => {
+  w.style.transform = 'translateY(110%)';
+  w.style.display = 'inline-block';
+});
+// Also hide the actions line
+document.querySelectorAll('.page-hero__actions .actions-line').forEach(l => {
+  l.style.transform = 'translateY(110%)';
+});
+</script>
+
+<script src="js/main.js"></script>
+
+<script>
+// ─── EXTEND HERO ANIMATION: actions line ───
+(function() {
+  const origInit = window.__heroInitDone;
+  // Piggyback on loader hidden event via MutationObserver
+  const loader = document.getElementById('loader');
+  if (loader) {
+    const obs = new MutationObserver(function() {
+      if (loader.classList.contains('hidden')) {
+        obs.disconnect();
+        setTimeout(function() {
+          document.querySelectorAll('.page-hero__actions .actions-line').forEach(function(l, i) {
+            l.style.transition = 'transform 0.9s cubic-bezier(0.16,1,0.3,1)';
+            setTimeout(function() { l.style.transform = 'translateY(0)'; }, 400 + i * 120);
+          });
+        }, 50);
+      }
+    });
+    obs.observe(loader, { attributes: true, attributeFilter: ['class'] });
+  }
+})();
+
+// ─── MENU TABS ───
+(function() {
+  const tabs   = document.querySelectorAll('.menu-tab');
+  const panels = document.querySelectorAll('.menu-panel');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t)   { t.classList.remove('active'); });
+      panels.forEach(function(p) { p.classList.remove('active'); });
+      tab.classList.add('active');
+      const target = document.getElementById(tab.dataset.tab);
+      if (target) {
+        target.classList.add('active');
+        // Re-trigger stagger on the newly visible panel
+        const stagger = target.querySelector('.stagger');
+        if (stagger) {
+          stagger.classList.remove('visible');
+          requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+              stagger.classList.add('visible');
+            });
+          });
+        }
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

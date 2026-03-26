@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal — Three Sixteen</title>
+<link rel="stylesheet" href="css/main.css">
+<style>
+/* ─── PAGE-SPECIFIC: JOURNAL ─── */
+
+/* ─── HERO ─── */
+.page-hero--journal { min-height: 72vh; }
+
+/* ─── CATEGORY FILTER BAR ─── */
+.filter-bar {
+  position: sticky;
+  top: 72px;
+  z-index: 50;
+  background: var(--ivory);
+  border-bottom: 1px solid rgba(17,17,17,0.08);
+  padding: 0 var(--pad-x);
+}
+.filter-bar__inner {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.filter-bar__inner::-webkit-scrollbar { display: none; }
+.filter-btn {
+  flex-shrink: 0;
+  padding: 0.55rem 1.2rem;
+  border-radius: 100px;
+  border: 1px solid rgba(17,17,17,0.2);
+  background: transparent;
+  color: var(--black);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s var(--ease-out), color 0.25s, border-color 0.25s;
+  white-space: nowrap;
+}
+.filter-btn:hover {
+  border-color: var(--black);
+  background: rgba(17,17,17,0.05);
+}
+.filter-btn.active {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+/* ─── FEATURED ARTICLE ─── */
+.featured-section {
+  background: var(--ivory);
+  padding: clamp(4rem, 8vw, 8rem) var(--pad-x);
+}
+.featured-article {
+  position: relative;
+  width: 100%;
+  min-height: 70vh;
+  overflow: hidden;
+  background: var(--dark);
+  cursor: pointer;
+}
+.featured-article__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.45) saturate(0.8);
+  transition: transform 1.2s var(--ease-out), filter 0.8s;
+  transform: scale(1.03);
+}
+.featured-article:hover .featured-article__img {
+  transform: scale(1.08);
+  filter: brightness(0.55) saturate(1);
+}
+.featured-article__gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(10,7,4,0.6) 0%,
+    transparent 50%,
+    rgba(10,7,4,0.3) 100%
+  ),
+  linear-gradient(
+    to top,
+    rgba(10,7,4,0.95) 0%,
+    rgba(10,7,4,0.4) 45%,
+    transparent 100%
+  );
+}
+.featured-article__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(2.5rem, 5vw, 5rem);
+  min-height: 70vh;
+}
+.featured-article__category {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.featured-article__category::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--warm);
+}
+.featured-article__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  max-width: 780px;
+  margin-bottom: 1.25rem;
+}
+.featured-article__excerpt {
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  color: rgba(255,255,255,0.55);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+.featured-article__meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.featured-article__meta-item {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+}
+.featured-article__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 2rem;
+  background: var(--beige);
+  color: var(--black);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin-top: 1.5rem;
+  align-self: flex-start;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s;
+}
+.featured-article__cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--white);
+  transform: translateX(-101%);
+  transition: transform 0.3s var(--ease-out);
+}
+.featured-article__cta:hover::after { transform: translateX(0); }
+.featured-article__cta:hover { transform: translateY(-2px); }
+.featured-article__cta span { position: relative; z-index: 1; }
+.featured-article__read-time {
+  position: absolute;
+  top: clamp(1.5rem, 3vw, 2.5rem);
+  right: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ─── ARTICLES GRID ─── */
+.articles-section {
+  background: var(--ivory);
+  padding: 0 var(--pad-x) clamp(5rem, 10vw, 10rem);
+}
+.articles-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.articles-row {
+  display: grid;
+  gap: 1.25rem;
+}
+.articles-row--2-1 { grid-template-columns: 2fr 1fr; }
+.articles-row--3-col { grid-template-columns: repeat(3, 1fr); }
+.articles-row--2-col { grid-template-columns: repeat(2, 1fr); }
+
+/* Article card height overrides for grid */
+.article-card { display: block; text-decoration: none; }
+.article-card__img-wrap {
+  position: relative;
+  overflow: hidden;
+  background: var(--dark);
+}
+.articles-row--2-1 .article-card:first-child .article-card__img-wrap { height: 480px; }
+.articles-row--2-1 .article-card:last-child .article-card__img-wrap { height: 480px; }
+.articles-row--3-col .article-card__img-wrap { height: 340px; }
+.articles-row--2-col .article-card__img-wrap { height: 400px; }
+
+/* Override to fix article-card img layout with wrap div */
+.article-card .article-card__img {
+  min-height: unset;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+}
+.article-card .article-card__content {
+  /* re-position relative to img-wrap not card */
+}
+.article-card__img-wrap { position: relative; }
+.article-card__overlay-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  z-index: 2;
+}
+.articles-row--2-1 .article-card:first-child .article-card__overlay-content {
+  padding: 2rem 2.5rem;
+}
+.articles-row--2-1 .article-card:first-child .article-card__title {
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+}
+.article-card__category {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin-bottom: 0.5rem;
+}
+.article-card__title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--white);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.article-card__meta {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.38);
+  margin-top: 0.5rem;
+}
+/* Transition for filter */
+[data-category] {
+  transition: opacity 0.3s var(--ease-out);
+}
+
+/* ─── OLDER STORIES / ARCHIVE ─── */
+.archive-section {
+  background: var(--ivory);
+  padding: var(--pad-y) var(--pad-x);
+  border-top: 1px solid rgba(17,17,17,0.06);
+}
+.archive-section__header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: flex-end;
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+}
+.archive-list {
+  list-style: none;
+}
+.archive-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 1.5rem clamp(1rem, 2.5vw, 2.5rem);
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(17,17,17,0.08);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left 0.35s var(--ease-out), background 0.2s;
+  position: relative;
+}
+.archive-item:first-child {
+  border-top: 1px solid rgba(17,17,17,0.08);
+}
+.archive-item:hover {
+  padding-left: 1rem;
+}
+.archive-item__category {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm);
+  white-space: nowrap;
+  min-width: 110px;
+}
+.archive-item__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--black);
+  line-height: 1.25;
+  transition: color 0.2s;
+}
+.archive-item:hover .archive-item__title {
+  color: var(--mid);
+}
+.archive-item__byline {
+  font-size: 0.75rem;
+  color: var(--mid);
+  white-space: nowrap;
+  text-align: right;
+}
+.archive-item__arrow {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(17,17,17,0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s var(--ease-out), border-color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+.archive-item:hover .archive-item__arrow {
+  transform: translateX(4px);
+  border-color: var(--black);
+  background: var(--black);
+  color: var(--white);
+}
+.archive-item__arrow svg { flex-shrink: 0; }
+
+/* ─── ABOUT THE JOURNAL ─── */
+.about-journal {
+  background: var(--beige);
+  padding: var(--pad-y) var(--pad-x);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(4rem, 8vw, 10rem);
+  align-items: center;
+}
+.about-journal__label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.about-journal__label-line {
+  width: 28px;
+  height: 1px;
+  background: var(--mid);
+}
+.about-journal__label span {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mid);
+  opacity: 0.8;
+}
+.about-journal__heading {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--black);
+  margin-bottom: 1.5rem;
+}
+.about-journal__body {
+  font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+  color: var(--mid);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+}
+.about-journal__img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.about-journal__img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: saturate(0.85);
+  transition: transform 0.9s var(--ease-out);
+}
+.about-journal__img-wrap:hover .about-journal__img {
+  transform: scale(1.04);
+}
+.about-journal__img-caption {
+  margin-top: 0.85rem;
+  font-size: 0.72rem;
+  color: var(--mid);
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .articles-row--2-1 { grid-template-columns: 1fr 1fr; }
+  .about-journal { grid-template-columns: 1fr; }
+  .about-journal__img-wrap { max-width: 520px; }
+}
+@media (max-width: 768px) {
+  .articles-row--2-1,
+  .articles-row--3-col,
+  .articles-row--2-col { grid-template-columns: 1fr; }
+  .articles-row--2-1 .article-card:first-child .article-card__img-wrap,
+  .articles-row--2-1 .article-card:last-child .article-card__img-wrap { height: 300px; }
+  .articles-row--3-col .article-card__img-wrap { height: 260px; }
+  .articles-row--2-col .article-card__img-wrap { height: 280px; }
+  .archive-item { grid-template-columns: auto 1fr auto; }
+  .archive-item__byline { display: none; }
+  .featured-article__content { padding: 2rem 1.5rem; }
+  .featured-article__title { font-size: clamp(1.6rem, 6vw, 2.8rem); }
+}
+@media (max-width: 480px) {
+  .archive-item { grid-template-columns: 1fr auto; gap: 0.75rem; }
+  .archive-item__category { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Page Transition + Scroll Progress -->
+<div class="page-transition"></div>
+<div class="scroll-progress"></div>
+
+<!-- Mobile Nav Overlay -->
+<div class="nav-overlay" id="navOverlay">
+  <ul class="nav-overlay__links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-overlay__footer">Three Sixteen &copy; 2025</div>
+</div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader__logo">Three Sixteen</div>
+  <div class="loader__bar-container"><div class="loader__bar" id="loaderBar"></div></div>
+  <div class="loader__num" id="loaderNum">0%</div>
+</div>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"></div>
+</div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="index.html" class="nav-logo">Three Sixteen</a>
+  <ul class="nav-links">
+    <li><a href="locations.html">Locations</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="journal.html" class="active">Journal</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="location-bonita.html" class="nav-cta">Find a Location</a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="page-hero page-hero--journal" id="pageHero">
+  <div class="page-hero__bg" id="heroBg" style="background-image: url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1800&q=80&fit=crop');"></div>
+  <div class="page-hero__overlay"></div>
+  <div class="page-hero__content">
+    <div class="page-hero__eyebrow">
+      <div class="page-hero__eyebrow-line"></div>
+      <span>Stories &middot; Recipes &middot; Ideas</span>
+    </div>
+    <h1 class="page-hero__title">
+      <span class="line"><span class="word">From the</span></span>
+      <span class="line"><span class="word"><em>Journal.</em></span></span>
+    </h1>
+    <div class="page-hero__subtitle">
+      <span class="line">We write about sourcing, craft, community, and what it</span>
+      <span class="line">actually takes to build something worth coming back to.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CATEGORY FILTER BAR
+════════════════════════════════════════ -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-bar__inner">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="sourcing">Sourcing</button>
+    <button class="filter-btn" data-filter="recipe">Recipe</button>
+    <button class="filter-btn" data-filter="behind the counter">Behind the Counter</button>
+    <button class="filter-btn" data-filter="community">Community</button>
+    <button class="filter-btn" data-filter="seasons">Seasons</button>
+    <button class="filter-btn" data-filter="business">Business</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FEATURED ARTICLE
+════════════════════════════════════════ -->
+<section class="featured-section">
+
+  <div class="section-label reveal" style="margin-bottom: clamp(2rem, 3vw, 3rem);">
+    <div class="section-label__line"></div>
+    <span class="label">Featured</span>
+  </div>
+
+  <div class="featured-article reveal-scale" data-category="sourcing">
+    <img
+      class="featured-article__img"
+      src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1800&q=85&fit=crop"
+      alt="Small-lot coffee farm"
+      loading="lazy"
+    >
+    <div class="featured-article__gradient"></div>
+    <div class="featured-article__read-time">12 min read</div>
+    <div class="featured-article__content">
+      <div class="featured-article__category">Featured &middot; Sourcing</div>
+      <h2 class="featured-article__title">Why We Only Work With Small-Lot Farms</h2>
+      <p class="featured-article__excerpt">After two years visiting farms across Ethiopia, Colombia, and Guatemala, we made a decision that changed our entire supply chain — and raised our costs by 40%.</p>
+      <div class="featured-article__meta">
+        <span class="featured-article__meta-item">Sarah Chen</span>
+        <span class="featured-article__meta-item">&middot;</span>
+        <span class="featured-article__meta-item">Mar 15, 2025</span>
+      </div>
+      <a href="#" class="featured-article__cta"><span>Read Story &rarr;</span></a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     LATEST ARTICLES GRID
+════════════════════════════════════════ -->
+<section class="articles-section">
+
+  <div class="section-label reveal" style="margin-bottom: clamp(2rem, 3vw, 3rem);">
+    <div class="section-label__line"></div>
+    <span class="label">Latest</span>
+  </div>
+
+  <div class="articles-grid stagger">
+
+    <!-- Row 1: Large (2/3) + Narrow (1/3) -->
+    <div class="articles-row articles-row--2-1">
+
+      <!-- Card 1: Large — Sourcing -->
+      <a href="#" class="article-card" data-category="sourcing">
+        <div class="article-card__img-wrap">
+          <img
+            class="article-card__img"
+            src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&q=85"
+            alt="Small-lot coffee farms"
+            loading="lazy"
+          >
+          <div class="article-card__overlay-content">
+            <div class="article-card__category">Sourcing</div>
+            <div class="article-card__title">Why We Only Work With Small-Lot Farms</div>
+            <div class="article-card__meta">Sarah Chen &middot; Mar 2025 &middot; 12 min read</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2: Narrow — Recipe -->
+      <a href="#" class="article-card" data-category="recipe">
+        <div class="article-card__img-wrap">
+          <img
+            class="article-card__img"
+            src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&q=85"
+            alt="Lavender latte"
+            loading="lazy"
+          >
+          <div class="article-card__overlay-content">
+            <div class="article-card__category">Recipe</div>
+            <div class="article-card__title">The Lavender Latte: How We Built It</div>
+            <div class="article-card__meta">James Park &middot; Feb 2025 &middot; 6 min read</div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Row 2: Three equal cards -->
+    <div class="articles-row articles-row--3-col">
+
+      <!-- Card 3: Behind the Counter -->
+      <a href="#" class="article-card" data-category="behind the counter">
+        <div class="article-card__img-wrap">
+          <img
+            class="article-card__img"
+            src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=85"
+            alt="Opening a cafe"
+            loading="lazy"
+          >
+          <div class="article-card__overlay-content">
+            <div class="article-card__category">Behind the Counter</div>
+            <div class="article-card__title">Opening Our First Café: What Nobody Warns You About</div>
+            <div class="article-card__meta">Andrii B. &middot; Feb 2025 &middot; 9 min read</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 4: Sourcing -->
+      <a href="#" class="article-card" data-category="sourcing">
+        <div class="article-card__img-wrap">
+          <img
+            class="article-card__img"
+            src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&q=85"
+            alt="Ethiopia coffee harvest"
+            loading="lazy"
+          >
+          <div class="article-card__overlay-content">
+            <div class="article-card__category">Sourcing</div>
+            <div class="article-card__title">Ethiopia Yirgacheffe: 2024 Harvest Report</div>
+            <div class="article-card__meta">Sarah Chen &middot; Dec 2024 &middot; 7 min read</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 5: Community -->
+      <a href="#" class="article-card" data-category="community">
+        <div class="article-card__img-wrap">
+          <img
+            class="article-card__img"
+            src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=800&q=85"
+            alt="Farmers market"
+            loading="lazy"
+          >
+          <div class="article-card__overlay-content">
+            <div class="article-card__category">Community</div>
+            <div class="article-card__title">The Bonita Farmers Market: How We Found Our Suppliers</div>
+            <div class="article-card__meta">Andrii B. &middot; Nov 2024 &middot; 5 min read</div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Row 3: Two equal cards -->
+    <div class="articles-row articles-row--2-col">
+
+      <!-- Card 6: Business -->
+      <a href="#" class="article-card" data-category="business">
+        <div class="article-card__img-wrap">
+          <img
+            class="article-card__img"
+            src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=85"
+            alt="Bonita Springs cafe"
+            loading="lazy"
+          >
+          <div class="article-card__overlay-content">
+            <div class="article-card__category">Business</div>
+            <div class="article-card__title">Why We Chose Bonita Springs First</div>
+            <div class="article-card__meta">Andrii B. &middot; Oct 2024 &middot; 8 min read</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 7: Seasons -->
+      <a href="#" class="article-card" data-category="seasons">
+        <div class="article-card__img-wrap">
+          <img
+            class="article-card__img"
+            src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=85"
+            alt="Winter seasonal menu"
+            loading="lazy"
+          >
+          <div class="article-card__overlay-content">
+            <div class="article-card__category">Seasons</div>
+            <div class="article-card__title">What&rsquo;s Driving This Winter&rsquo;s Menu</div>
+            <div class="article-card__meta">James Park &middot; Sep 2024 &middot; 4 min read</div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Card 8 (Recipe — standalone, shown as single wide card) -->
+    <div class="articles-row articles-row--2-col">
+
+      <a href="#" class="article-card" data-category="recipe">
+        <div class="article-card__img-wrap">
+          <img
+            class="article-card__img"
+            src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=85"
+            alt="Almond Canelé"
+            loading="lazy"
+          >
+          <div class="article-card__overlay-content">
+            <div class="article-card__category">Recipe</div>
+            <div class="article-card__title">Making the Almond Canel&eacute;: A 36-Hour Process</div>
+            <div class="article-card__meta">James Park &middot; Aug 2024 &middot; 5 min read</div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     MARQUEE
+════════════════════════════════════════ -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <span class="marquee-item">Sourcing <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Community <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Craft <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Recipes <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Behind the Counter <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Seasons <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Sourcing <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Community <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Craft <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Recipes <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Behind the Counter <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Seasons <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     OLDER STORIES / ARCHIVE
+════════════════════════════════════════ -->
+<section class="archive-section">
+
+  <div class="archive-section__header reveal">
+    <div>
+      <div class="section-label" style="margin-bottom: 1rem;">
+        <div class="section-label__line"></div>
+        <span class="label">Archive</span>
+      </div>
+      <h2 class="h2">More from the journal.</h2>
+    </div>
+  </div>
+
+  <ul class="archive-list stagger">
+
+    <li>
+      <a href="#" class="archive-item">
+        <span class="archive-item__category">Sourcing</span>
+        <span class="archive-item__title">The Difference Between Washed and Natural Process — and Why It Matters</span>
+        <span class="archive-item__byline">Sarah Chen &middot; Jul 2024</span>
+        <span class="archive-item__arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" class="archive-item">
+        <span class="archive-item__category">Recipe</span>
+        <span class="archive-item__title">Cold Brew at Home: Our Exact Ratio and Method</span>
+        <span class="archive-item__byline">James Park &middot; Jun 2024</span>
+        <span class="archive-item__arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" class="archive-item">
+        <span class="archive-item__category">Community</span>
+        <span class="archive-item__title">Why We Started a Monthly Coffee Cupping Open to Everyone</span>
+        <span class="archive-item__byline">Andrii B. &middot; May 2024</span>
+        <span class="archive-item__arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" class="archive-item">
+        <span class="archive-item__category">Business</span>
+        <span class="archive-item__title">The Real Cost of Specialty Coffee — And What We're Doing About It</span>
+        <span class="archive-item__byline">Andrii B. &middot; Apr 2024</span>
+        <span class="archive-item__arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" class="archive-item">
+        <span class="archive-item__category">Seasons</span>
+        <span class="archive-item__title">Spring Menu Preview: What We're Excited About This Year</span>
+        <span class="archive-item__byline">James Park &middot; Mar 2024</span>
+        <span class="archive-item__arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" class="archive-item">
+        <span class="archive-item__category">Behind the Counter</span>
+        <span class="archive-item__title">What We Look for When We Hire — Beyond Barista Skills</span>
+        <span class="archive-item__byline">Andrii B. &middot; Feb 2024</span>
+        <span class="archive-item__arrow">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    </li>
+
+  </ul>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     ABOUT THE JOURNAL
+════════════════════════════════════════ -->
+<section class="about-journal">
+
+  <div class="reveal-left">
+    <div class="about-journal__label">
+      <div class="about-journal__label-line"></div>
+      <span>About this journal</span>
+    </div>
+    <h2 class="about-journal__heading">We write because we believe in sharing what we know.</h2>
+    <p class="about-journal__body">This isn't a marketing blog. It's a record of decisions, experiments, mistakes, and things we learned along the way. We share it because it's useful — to other operators, to guests, and to ourselves.</p>
+    <a href="#newsletter" class="btn-dark">
+      <span>Subscribe to the Journal</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="about-journal__img-wrap reveal-right img-reveal">
+    <img
+      class="about-journal__img"
+      src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=85&fit=crop"
+      alt="Portrait editorial — journal author"
+      loading="lazy"
+    >
+    <p class="about-journal__img-caption">The team behind the stories.</p>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════
+     NEWSLETTER
+════════════════════════════════════════ -->
+<div class="newsletter" id="newsletter">
+  <div class="reveal">
+    <h2 class="newsletter__title">Get the journal in your inbox.</h2>
+    <p class="newsletter__subtitle">New stories, recipes, and sourcing updates — no noise, no spam. Just what we actually write.</p>
+  </div>
+  <div class="reveal">
+    <form class="newsletter__form" onsubmit="return false;">
+      <div class="newsletter__input-row">
+        <input type="email" class="newsletter__input" placeholder="Your email address" aria-label="Email address">
+        <button type="submit" class="newsletter__submit">Subscribe</button>
+      </div>
+      <p class="caption">No noise. Unsubscribe any time.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="footer__top">
+    <div>
+      <div class="footer__brand-name">Three Sixteen</div>
+      <p class="footer__brand-tagline">Coffee made with intention. Three cafes across Southwest Florida.</p>
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram">Ig</a>
+        <a href="#" aria-label="Facebook">Fb</a>
+        <a href="#" aria-label="Twitter / X">X</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Explore</div>
+      <ul class="footer__links">
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="locations.html">Locations</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="shop.html">Shop</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Company</div>
+      <ul class="footer__links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html#careers">Careers</a></li>
+        <li><a href="about.html#press">Press</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Community</div>
+      <ul class="footer__links">
+        <li><a href="#">Loyalty Club</a></li>
+        <li><a href="#">Transparency</a></li>
+        <li><a href="#">Partners</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2025 Three Sixteen Coffee &amp; Bakery. All rights reserved.</span>
+    <span class="footer__copy">Bonita Springs &middot; Naples &middot; Estero</span>
+  </div>
+</footer>
+
+<script>
+// ─── Hero word reveal ───
+document.querySelectorAll('.page-hero__title .word').forEach(w => {
+  w.style.transform = 'translateY(110%)';
+  w.style.display = 'inline-block';
+});
+
+// ─── Hero BG load ───
+const heroBg = document.getElementById('heroBg');
+if (heroBg) {
+  const img = new Image();
+  img.onload = () => heroBg.classList.add('loaded');
+  img.src = heroBg.style.backgroundImage.replace(/url\(['"]?([^'"]+)['"]?\)/, '$1');
+}
+
+// ─── Category filter ───
+const filterBtns = document.querySelectorAll('.filter-btn');
+const articleCards = document.querySelectorAll('[data-category]');
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.filter;
+    articleCards.forEach(card => {
+      if (cat === 'all' || card.dataset.category.toLowerCase() === cat.toLowerCase()) {
+        card.style.display = '';
+        setTimeout(() => card.style.opacity = '1', 10);
+      } else {
+        card.style.opacity = '0';
+        setTimeout(() => card.style.display = 'none', 300);
+      }
+    });
+  });
+});
+</script>
+<script src="js/main.js"></script>
+</body>
+</html>
