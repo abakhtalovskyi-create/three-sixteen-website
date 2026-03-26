@@ -673,12 +673,14 @@
   .parallax-section {
     position: relative;
     height: 70vh; overflow: hidden;
+    width: 100vw; margin-left: calc(50% - 50vw);
   }
   .parallax-img {
-    position: absolute; inset: -20%;
-    width: 100%; height: 140%;
+    position: absolute;
+    top: -25%; left: 0;
+    width: 100%; height: 150%;
     object-fit: cover;
-    filter: brightness(0.6);
+    filter: brightness(0.55);
     will-change: transform;
   }
   .parallax-overlay {
@@ -1029,19 +1031,19 @@
 <!-- STATS -->
 <div class="stats stagger">
   <div class="stat">
-    <div class="stat__num">3<span>+</span></div>
+    <div class="stat__num" data-count="3" data-suffix="+">0<span>+</span></div>
     <div class="stat__label">Locations Open</div>
   </div>
   <div class="stat">
-    <div class="stat__num">6</div>
+    <div class="stat__num" data-count="6" data-suffix="">0</div>
     <div class="stat__label">Farm Partners</div>
   </div>
   <div class="stat">
-    <div class="stat__num">20<span>21</span></div>
+    <div class="stat__num" data-count="2021" data-suffix="">0</div>
     <div class="stat__label">Est. in Florida</div>
   </div>
   <div class="stat">
-    <div class="stat__num">100<span>%</span></div>
+    <div class="stat__num" data-count="100" data-suffix="%">0<span>%</span></div>
     <div class="stat__label">Seasonal Menu</div>
   </div>
 </div>

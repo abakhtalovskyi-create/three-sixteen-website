@@ -217,8 +217,87 @@ document.querySelectorAll('.btn-primary, .btn-dark, .btn-ghost, .nav-cta').forEa
   });
 });
 
+/* ─── SCROLL-VELOCITY MARQUEE ─── */
+let lastScrollY = window.scrollY;
+let scrollVelocity = 0;
+let velocityRAF;
+function measureVelocity() {
+  const current = window.scrollY;
+  scrollVelocity = current - lastScrollY;
+  lastScrollY = current;
+  const tracks = document.querySelectorAll('.marquee-track, .horiz-text__track');
+  tracks.forEach(track => {
+    const speed = Math.max(1, Math.min(4, 1 + Math.abs(scrollVelocity) * 0.08));
+    track.style.animationPlayState = 'running';
+    track.style.animationDuration = (20 / speed) + 's';
+  });
+  velocityRAF = requestAnimationFrame(measureVelocity);
+}
+measureVelocity();
+
+/* ─── IMAGE TILT ON HOVER ─── */
+document.querySelectorAll('.location-card, .article-card, .menu-visual').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${-y * 4}deg) scale(1.02)`;
+    card.style.transition = 'transform 0.1s ease';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
+  });
+});
+
+/* ─── CHAR SPLIT ANIMATION for h2 headings ─── */
+function splitChars(el) {
+  const text = el.innerHTML;
+  // Only split plain text nodes, skip elements with HTML
+  if (el.querySelector('em, span, br')) return;
+  el.innerHTML = text.split('').map(ch =>
+    ch === ' ' ? ' ' : `<span class="char" style="display:inline-block;transform:translateY(60px) rotate(4deg);opacity:0;transition:transform 0.7s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease">${ch}</span>`
+  ).join('');
+  const chars = el.querySelectorAll('.char');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      chars.forEach((ch, i) => setTimeout(() => {
+        ch.style.transform = 'translateY(0) rotate(0deg)';
+        ch.style.opacity = '1';
+      }, i * 28));
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.3 });
+  obs.observe(el);
+}
+document.querySelectorAll('.values__headline, .parallax-quote').forEach(splitChars);
+
+/* ─── SECTION BG COLOUR SHIFT on scroll ─── */
+// Adds a subtle dark vignette to the hero as you scroll away
+const heroEl = document.querySelector('.hero');
+if (heroEl) {
+  window.addEventListener('scroll', () => {
+    const scrolled = Math.min(window.scrollY / 600, 1);
+    const overlay = heroEl.querySelector('.hero__overlay');
+    if (overlay) overlay.style.opacity = 0.7 + scrolled * 0.3;
+  }, { passive: true });
+}
+
+/* ─── LOCATION CARD PARALLAX ─── */
+document.querySelectorAll('.location-card__img').forEach(img => {
+  const card = img.closest('.location-card');
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    img.style.transform = `scale(1.08) translateY(${y * -12}px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    img.style.transform = '';
+  });
+});
+
 /* ─── HORIZONTAL SCROLL DIRECTION REVERSE ─── */
-const horizReverse = document.querySelectorAll('.horiz-text__track--reverse');
 // Already handled by CSS animation direction
 
 })();

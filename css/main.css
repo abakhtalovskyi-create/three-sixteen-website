@@ -388,9 +388,13 @@ section, .section { padding: var(--pad-y) var(--pad-x); }
 .statement__word-inner.visible { transform: translateY(0); }
 
 /* ─── PARALLAX SECTION ─── */
-.parallax-section { position: relative; height: 70vh; overflow: hidden; }
+.parallax-section {
+  position: relative; height: 70vh; overflow: hidden;
+  width: 100vw; margin-left: calc(50% - 50vw);
+}
 .parallax-img {
-  position: absolute; inset: -20%; width: 100%; height: 140%;
+  position: absolute; top: -25%; left: 0;
+  width: 100%; height: 150%;
   object-fit: cover; filter: brightness(0.55); will-change: transform;
 }
 .parallax-overlay {
@@ -636,6 +640,27 @@ footer {
   position: fixed; top: 0; left: 0; height: 2px; z-index: 101;
   background: var(--warm); width: 0; transition: width 0.1s linear;
 }
+
+/* ─── LOCATION CARD TILT ─── */
+.location-card { transform-style: preserve-3d; }
+.location-card__img { transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.8s; }
+
+/* ─── COUNTER FLASH ─── */
+@keyframes countFlash {
+  0%   { opacity: 0.3; transform: translateY(8px); }
+  100% { opacity: 1;   transform: translateY(0); }
+}
+.stat__num { animation: none; }
+.stat__num.counting { animation: countFlash 0.15s ease-out; }
+
+/* ─── CHAR SPLIT ─── */
+.values__headline .char,
+.parallax-quote .char {
+  will-change: transform, opacity;
+}
+
+/* ─── HERO SCROLL FADE ─── */
+.hero__overlay { transition: opacity 0.1s linear; }
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 1024px) {
